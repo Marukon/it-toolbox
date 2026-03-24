@@ -470,6 +470,157 @@ const result = await generateSql(
 
 ---
 
+### 7. 汇率查询
+
+查询实时汇率信息。
+
+**请求**
+
+```
+GET /api/exchange?from={from}&to={to}&amount={amount}
+GET /api/exchange/rates?base={base}
+```
+
+**参数**
+
+| 参数 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| from | string | 是 | 源货币代码（如 USD） |
+| to | string | 是 | 目标货币代码（如 CNY） |
+| amount | number | 否 | 换算金额，默认 1 |
+
+**响应**
+
+```json
+{
+  "success": true,
+  "data": {
+    "rate": 7.24,
+    "from": "USD",
+    "to": "CNY",
+    "amount": 1,
+    "result": 7.24,
+    "timestamp": 1708444800,
+    "cached": false
+  }
+}
+```
+
+**缓存策略**
+
+- 缓存时间：1 小时（3600 秒）
+- 缓存键：`cache:exchange:{from}:{to}`
+
+**示例**
+
+```bash
+# 查询汇率
+curl "https://your-domain.com/api/exchange?from=USD&to=CNY&amount=100"
+
+# 获取基准汇率
+curl "https://your-domain.com/api/exchange/rates?base=USD"
+```
+
+---
+
+### 8. HTTP 代理
+
+代理发送 HTTP 请求，解决跨域问题。
+
+**请求**
+
+```
+POST /api/proxy
+```
+
+**请求体**
+
+```json
+{
+  "url": "https://api.example.com/data",
+  "method": "GET",
+  "headers": {
+    "Authorization": "Bearer token"
+  },
+  "body": ""
+}
+```
+
+| 参数 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| url | string | 是 | 请求的 URL（仅支持 HTTP/HTTPS） |
+| method | string | 否 | HTTP 方法，默认 GET |
+| headers | object | 否 | 请求头 |
+| body | string | 否 | 请求体（POST/PUT/PATCH 时使用） |
+
+**响应**
+
+```json
+{
+  "success": true,
+  "status": 200,
+  "statusText": "OK",
+  "headers": {
+    "content-type": "application/json"
+  },
+  "body": "{\"data\": \"value\"}"
+}
+```
+
+---
+
+### 9. AI 代码 Review
+
+AI 进行代码审查，分析安全性、性能、可读性。
+
+**请求**
+
+```
+POST /api/ai/review
+```
+
+**请求体**
+
+```json
+{
+  "code": "function getUserData(userId) { ... }",
+  "language": "javascript"
+}
+```
+
+| 参数 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| code | string | 是 | 要审查的代码（最大 4000 字符） |
+| language | string | 否 | 编程语言标识 |
+
+**响应**
+
+```json
+{
+  "success": true,
+  "data": {
+    "security": {
+      "score": 60,
+      "issues": ["SQL 注入风险"],
+      "suggestions": ["使用参数化查询"]
+    },
+    "performance": {
+      "score": 80,
+      "issues": [],
+      "suggestions": ["可添加索引优化"]
+    },
+    "readability": {
+      "score": 90,
+      "issues": [],
+      "suggestions": []
+    },
+    "overall": "代码整体质量良好，建议修复 SQL 注入问题..."
+  }
+}
+```
+
+---
+
 ## 错误处理
 
 ### HTTP 状态码
@@ -530,6 +681,8 @@ Access-Control-Allow-Headers: Content-Type
 |----------|-----|----------|
 | IP 查询 | 3600s | `cache:ip:{ip}` |
 | DNS 查询 | 300s | `cache:dns:{domain}:{type}` |
+| 汇率查询 | 3600s | `cache:exchange:{from}:{to}` |
+| 汇率基准 | 3600s | `cache:exchange:rates:{base}` |
 
 ### 环境变量
 
@@ -606,5 +759,5 @@ export interface AiSqlResponse {
 
 | 版本 | 日期 | 变更内容 |
 |------|------|----------|
-| 2.0.0 | 2026-02-21 | 更新 API 文档，补充 IP 查询任意 IP 功能说明 |
+| 2.0.0 | 2026-03-24 | 新增汇率查询、HTTP代理、AI代码Review接口 |
 | 1.0.0 | 2026-02-20 | 初始版本，包含 IP、DNS、AI 接口 |

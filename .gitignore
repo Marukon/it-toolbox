@@ -5,3 +5,9 @@ dist
 .env.local
 *.local
 *.docx
+
+.trae/
+
+package-lock.json
+
+.pnpm-debug.log

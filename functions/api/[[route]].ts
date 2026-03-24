@@ -4,6 +4,8 @@ import { cors } from 'hono/cors'
 import { ipRoute } from './routes/ip'
 import { dnsRoute } from './routes/dns'
 import { aiRoute } from './routes/ai'
+import { exchangeRoute } from './routes/exchange'
+import { proxyRoute } from './routes/proxy'
 
 export interface Env {
   CACHE: KVNamespace
@@ -22,5 +24,7 @@ app.get('/api/health', (c) => c.json({ ok: true, ts: Date.now() }))
 app.route('/api/ip', ipRoute)
 app.route('/api/dns', dnsRoute)
 app.route('/api/ai', aiRoute)
+app.route('/api/exchange', exchangeRoute)
+app.route('/api/proxy', proxyRoute)
 
 export const onRequest = handle(app)

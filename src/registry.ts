@@ -716,6 +716,85 @@ export const toolRegistry: ToolMeta[] = [
     requiresApi: true,
     isNew: true,
   },
+  {
+    id: 'ai-code-review',
+    name: 'AI 代码 Review',
+    nameEn: 'AI Code Review',
+    description: 'AI 进行 Code Review，安全漏洞、性能、可读性三维分析',
+    category: 'ai',
+    tags: ['ai', 'code', 'review', 'security', 'performance'],
+    keywords: ['代码审查', '安全', '性能', '可读性'],
+    icon: 'GitPullRequest',
+    requiresApi: true,
+    isNew: true,
+  },
+
+  // ─── Phase 3.5: JSON&数据工具 ─────────────────────────────────────────────
+
+  {
+    id: 'json-path',
+    name: 'JSONPath 查询',
+    nameEn: 'JSONPath Query',
+    description: '使用 JSONPath 表达式查询 JSON 数据，支持复杂过滤',
+    category: 'format',
+    tags: ['json', 'jsonpath', 'query', 'filter', 'extract'],
+    keywords: ['JSONPath', '查询', '过滤', '提取', 'JSON'],
+    icon: 'Search',
+    isNew: true,
+  },
+  {
+    id: 'json-to-csv',
+    name: 'JSON 转 CSV',
+    nameEn: 'JSON to CSV',
+    description: '将 JSON 数组转换为 CSV 格式，支持自定义分隔符',
+    category: 'format',
+    tags: ['json', 'csv', 'convert', 'transform', 'export'],
+    keywords: ['JSON', 'CSV', '转换', '导出', '表格'],
+    icon: 'Table',
+    isNew: true,
+  },
+
+  // ─── Phase 3.6: 数学&计算 ─────────────────────────────────────────────────
+
+  {
+    id: 'math-eval',
+    name: '数学表达式计算',
+    nameEn: 'Math Expression Evaluator',
+    description: '计算复杂数学表达式，支持函数、常量、单位换算',
+    category: 'text',
+    tags: ['math', 'calculator', 'expression', 'evaluate', 'formula'],
+    keywords: ['数学', '计算', '表达式', '公式', '科学计算'],
+    icon: 'Calculator',
+    isNew: true,
+  },
+
+  // ─── Phase 3.7: HTML&CSS工具 ──────────────────────────────────────────────
+
+  {
+    id: 'html-preview',
+    name: 'HTML 实时预览',
+    nameEn: 'HTML Live Preview',
+    description: '实时预览 HTML/CSS/JS 代码，支持外部资源加载',
+    category: 'format',
+    tags: ['html', 'preview', 'live', 'editor', 'sandbox'],
+    keywords: ['HTML', '预览', '实时', '编辑器', '沙盒'],
+    icon: 'Code',
+    isNew: true,
+  },
+
+  // ─── Phase 3.8: SEO工具 ───────────────────────────────────────────────────
+
+  {
+    id: 'meta-tag-gen',
+    name: 'Meta 标签生成',
+    nameEn: 'Meta Tag Generator',
+    description: '生成 SEO 友好的 Meta 标签，支持 Open Graph 和 Twitter Card',
+    category: 'devops',
+    tags: ['meta', 'seo', 'html', 'og', 'twitter'],
+    keywords: ['Meta', 'SEO', '标签', 'Open Graph', 'Twitter Card'],
+    icon: 'Tags',
+    isNew: true,
+  },
 
   // ─── Phase 3.1: 图片&媒体 (8个) ────────────────────────────────────────────
 
@@ -885,6 +964,50 @@ export const toolRegistry: ToolMeta[] = [
     tags: ['json', 'schema', 'generate', 'validation', 'typescript'],
     keywords: ['模式推断', 'json验证', 'schema生成'],
     icon: 'FileJson',
+    isNew: true,
+  },
+
+  // ─── Phase 3.3: 单位换算 ───────────────────────────────────────────────────
+
+  {
+    id: 'exchange-rate',
+    name: '汇率换算',
+    nameEn: 'Exchange Rate',
+    description: '实时汇率换算，支持 150+ 货币，历史趋势图表',
+    category: 'converter',
+    tags: ['exchange', 'rate', 'currency', 'money', 'convert'],
+    keywords: ['汇率', '货币', '换算', '美元', '人民币'],
+    icon: 'Coins',
+    requiresApi: true,
+    isNew: true,
+  },
+
+  // ─── Phase 3.4: 效率&协作 ─────────────────────────────────────────────────
+
+  {
+    id: 'api-playground',
+    name: 'HTTP API 测试',
+    nameEn: 'HTTP API Playground',
+    description: '类 Postman 界面，发送 GET/POST/PUT/DELETE 请求，查看响应',
+    category: 'network',
+    tags: ['http', 'api', 'test', 'request', 'postman', 'rest'],
+    keywords: ['API', 'HTTP', '请求', '测试', '接口'],
+    icon: 'Send',
+    requiresApi: true,
+    isNew: true,
+  },
+
+  // ─── Phase 3.5: 二维码&条形码 ─────────────────────────────────────────────
+
+  {
+    id: 'qrcode-reader',
+    name: '二维码识别',
+    nameEn: 'QR Code Reader',
+    description: '上传图片或摄像头扫码，识别二维码内容',
+    category: 'generator',
+    tags: ['qrcode', 'qr', 'reader', 'scanner', 'decode'],
+    keywords: ['二维码', '识别', '扫码', '解析'],
+    icon: 'Scan',
     isNew: true,
   },
 ]

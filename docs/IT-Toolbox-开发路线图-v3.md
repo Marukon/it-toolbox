@@ -66,27 +66,27 @@
 *   wrangler.toml+Pages Functions Hono入口骨架
 *   GitHub直连 Cloudflare Pages, CI验证 typecheck+ build
 
-##### 1.2工具清单(第2-3周)
+#### 1.2工具清单(第2-3周) ✅ 已完成
 
-| 工具ID | 工具名称 | 功能说明 | 实现方式 |
-| :--- | :--- | :--- | :--- |
-| json- formatter | JSON格式化 | 格式化/压缩/校验/错误定位,缩 进2/4可选,支持大文件 | 前端·纯计算 |
-| base64 | Base64编解码 | 文本 Base64/ Base64URL编解 码,支持文件转Base64 | 前端·TextEncoder |
-| url-encode | URL编解码 | encodeURIComponent/完整 URL 编解码,参数解析 | 前端·纯计算 |
-| jwt-decoder | JWT解析 | 解析Header/Payload,时间戳转 人类时间,高亮过期 | 前端·atob |
-| uuid- generator | UUID生成器 | UUID v4批量生成(最多1000), 大写/小写/带连字符可选 | 前端·crypto.randomUUID |
-| hash- calculator | Hash计算器 | MD5(JS实现)/SHA- 1/256/384/512,支持文本和文件 | 前端·Web Crypto API |
-| password-gen | 密码生成器 | 可配置字符集、长度、数量,强度 可视化,批量导出 | 前 端·crypto.getRandomValues |
-| timestamp | 时间戳转换 | Unix→日期时间,支持毫秒/秒,全 球时区,自动识别当前时间 | 前端·dayjs |
-| case- converter | 命名规范转换 | camelCase / PascalCase / snake case / kebab-case / CONSTANT | 前端·纯计算 |
-| lorem-ipsum | 占位文本生成 | 英文Lorem/中文乱数假文,段落数 /单词数可配置 | 前端·纯计算 |
-| color-picker | 颜色选择器 | HEX/RGB/HSL/HSV/CMYK互 转,色盘可视化 | 前端·chroma-js |
-| markdown- preview | Markdown预览 | 实时渲染,支持GFM、数学公式、 代码高亮,导出HTML | 前端·marked+highlight.js |
-| regex-tester | 正则表达式测试 | 实时高亮匹配,分组提取,多行模 式,常用正则库 | 前端·纯RegExp |
-| number-base | 进制转换 | 二/八/十/十六进制互转,按位操 作可视化 | 前端·纯计算 |
-| text-counter | 文本统计 | 字符数/单词数/行数/字节数/阅 读时间估算 | 前端·纯计算 |
+| 工具ID | 工具名称 | 功能说明 | 实现方式 | 状态 |
+| :--- | :--- | :--- | :--- | :--- |
+| json- formatter | JSON格式化 | 格式化/压缩/校验/错误定位,缩 进2/4可选,支持大文件 | 前端·纯计算 | ✅ |
+| base64 | Base64编解码 | 文本 Base64/ Base64URL编解 码,支持文件转Base64 | 前端·TextEncoder | ✅ |
+| url-encode | URL编解码 | encodeURIComponent/完整 URL 编解码,参数解析 | 前端·纯计算 | ✅ |
+| jwt-decoder | JWT解析 | 解析Header/Payload,时间戳转 人类时间,高亮过期 | 前端·atob | ✅ |
+| uuid- generator | UUID生成器 | UUID v4批量生成(最多1000), 大写/小写/带连字符可选 | 前端·crypto.randomUUID | ✅ |
+| hash- calculator | Hash计算器 | MD5(JS实现)/SHA- 1/256/384/512,支持文本和文件 | 前端·Web Crypto API | ✅ |
+| password-gen | 密码生成器 | 可配置字符集、长度、数量,强度 可视化,批量导出 | 前 端·crypto.getRandomValues | ✅ |
+| timestamp | 时间戳转换 | Unix→日期时间,支持毫秒/秒,全 球时区,自动识别当前时间 | 前端·dayjs | ✅ |
+| case- converter | 命名规范转换 | camelCase / PascalCase / snake case / kebab-case / CONSTANT | 前端·纯计算 | ✅ |
+| lorem-ipsum | 占位文本生成 | 英文Lorem/中文乱数假文,段落数 /单词数可配置 | 前端·纯计算 | ✅ |
+| color-picker | 颜色选择器 | HEX/RGB/HSL/HSV/CMYK互 转,色盘可视化 | 前端·chroma-js | ✅ |
+| markdown- preview | Markdown预览 | 实时渲染,支持GFM、数学公式、 代码高亮,导出HTML | 前端·marked+highlight.js | ✅ |
+| regex-tester | 正则表达式测试 | 实时高亮匹配,分组提取,多行模 式,常用正则库 | 前端·纯RegExp | ✅ |
+| number-base | 进制转换 | 二/八/十/十六进制互转,按位操 作可视化 | 前端·纯计算 | ✅ |
+| text-counter | 文本统计 | 字符数/单词数/行数/字节数/阅 读时间估算 | 前端·纯计算 | ✅ |
 
-Phase1结束时可上线MVP:15个工具覆盖最高频的日常开发场景,纯前端零延迟。
+Phase1结束时可上线MVP:15个工具覆盖最高频的日常开发场景,纯前端零延迟。 ✅ 已完成
 
 #### Phase2·核心工具矩阵
 第4-9周·52个工具·总量达67个

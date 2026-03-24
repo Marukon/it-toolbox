@@ -76,6 +76,7 @@ const toolComponents: Record<string, React.LazyExoticComponent<() => JSX.Element
   'ai-regex': lazy(() => import('@/tools/ai-regex/index')),
   'ai-sql': lazy(() => import('@/tools/ai-sql/index')),
   'ai-code-explain': lazy(() => import('@/tools/ai-code-explain/index')),
+  'ai-code-review': lazy(() => import('@/tools/ai-code-review/index')),
   // Phase 3.1 - 图片&媒体
   'svg-optimizer': lazy(() => import('@/tools/svg-optimizer/index')),
   'svg-to-data-uri': lazy(() => import('@/tools/svg-to-data-uri/index')),
@@ -93,6 +94,21 @@ const toolComponents: Record<string, React.LazyExoticComponent<() => JSX.Element
   'semver-calc': lazy(() => import('@/tools/semver-calc/index')),
   'openapi-viewer': lazy(() => import('@/tools/openapi-viewer/index')),
   'json-schema-gen': lazy(() => import('@/tools/json-schema-gen/index')),
+  // Phase 3.3 - 单位换算
+  'exchange-rate': lazy(() => import('@/tools/exchange-rate/index')),
+  // Phase 3.4 - 效率&协作
+  'api-playground': lazy(() => import('@/tools/api-playground/index')),
+  // Phase 3.5 - 二维码&条形码
+  'qrcode-reader': lazy(() => import('@/tools/qrcode-reader/index')),
+  // Phase 3.6 - JSON&数据工具
+  'json-path': lazy(() => import('@/tools/json-path/index')),
+  'json-to-csv': lazy(() => import('@/tools/json-to-csv/index')),
+  // Phase 3.7 - 数学&计算
+  'math-eval': lazy(() => import('@/tools/math-eval/index')),
+  // Phase 3.8 - HTML&CSS工具
+  'html-preview': lazy(() => import('@/tools/html-preview/index')),
+  // Phase 3.9 - SEO工具
+  'meta-tag-gen': lazy(() => import('@/tools/meta-tag-gen/index')),
 }
 
 function ToolSkeleton() {
