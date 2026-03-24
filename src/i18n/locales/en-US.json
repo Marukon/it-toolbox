@@ -1,0 +1,207 @@
+{
+  "app": {
+    "name": "IT Toolbox",
+    "description": "Developer Toolbox, 150+ Practical Tools",
+    "searchPlaceholder": "Search tools..."
+  },
+  "common": {
+    "copy": "Copy",
+    "copied": "Copied",
+    "reset": "Reset",
+    "clear": "Clear",
+    "download": "Download",
+    "upload": "Upload",
+    "generate": "Generate",
+    "convert": "Convert",
+    "format": "Format",
+    "minify": "Minify",
+    "preview": "Preview",
+    "result": "Result",
+    "input": "Input",
+    "output": "Output",
+    "loading": "Loading...",
+    "processing": "Processing...",
+    "success": "Success",
+    "error": "Error",
+    "warning": "Warning",
+    "info": "Info",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "close": "Close",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "remove": "Remove",
+    "selectAll": "Select All",
+    "deselectAll": "Deselect All",
+    "noResults": "No results found",
+    "noData": "No data"
+  },
+  "nav": {
+    "home": "Home",
+    "favorites": "Favorites",
+    "recent": "Recent",
+    "allTools": "All Tools",
+    "settings": "Settings"
+  },
+  "categories": {
+    "encoding": "Encoding",
+    "crypto": "Crypto & Security",
+    "format": "Format",
+    "text": "Text Processing",
+    "color": "Color & Design",
+    "network": "Network & HTTP",
+    "datetime": "Date & Time",
+    "generator": "Generator",
+    "image": "Image & Media",
+    "devops": "DevOps",
+    "converter": "Unit Converter",
+    "ai": "AI Enhanced"
+  },
+  "theme": {
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System",
+    "toggle": "Toggle theme",
+    "select": "Select theme",
+    "switchToLight": "Switch to light mode",
+    "switchToDark": "Switch to dark mode"
+  },
+  "language": {
+    "title": "Language",
+    "zh-CN": "简体中文",
+    "en-US": "English"
+  },
+  "pwa": {
+    "install": "Install App",
+    "installDescription": "Install IT Toolbox locally for a better experience",
+    "updateAvailable": "New version available",
+    "updateNow": "Update Now",
+    "offline": "You are offline"
+  },
+  "search": {
+    "placeholder": "Search tools...",
+    "noResults": "No tools found",
+    "shortcuts": {
+      "navigate": "Navigate",
+      "open": "Open",
+      "close": "Close"
+    }
+  },
+  "tools": {
+    "bcrypt": {
+      "name": "Bcrypt Hash",
+      "description": "Bcrypt password hashing and verification with configurable rounds",
+      "hashMode": "Generate Hash",
+      "verifyMode": "Verify Password",
+      "password": "Password",
+      "hashValue": "Hash Value",
+      "rounds": "Rounds",
+      "generateHash": "Generate Hash",
+      "verifyPassword": "Verify Password",
+      "matchSuccess": "Password matches!",
+      "matchFail": "Password does not match"
+    },
+    "cssGradient": {
+      "name": "CSS Gradient Generator",
+      "description": "Generate CSS gradient background code",
+      "linear": "Linear",
+      "radial": "Radial",
+      "conic": "Conic",
+      "angle": "Angle",
+      "colorStops": "Color Stops",
+      "addStop": "Add Stop",
+      "cssCode": "CSS Code"
+    },
+    "colorPalette": {
+      "name": "Color Palette Generator",
+      "description": "Generate color schemes based on a base color",
+      "baseColor": "Base Color",
+      "copyAll": "Copy All",
+      "analogous": "Analogous",
+      "complementary": "Complementary",
+      "splitComplementary": "Split Complementary",
+      "triadic": "Triadic",
+      "tetradic": "Tetradic",
+      "monochromatic": "Monochromatic",
+      "shades": "Shades",
+      "contrastMatrix": "WCAG Contrast Matrix",
+      "onWhite": "on White",
+      "onBlack": "on Black",
+      "largeText": "Large Text",
+      "bodyText": "Body Text"
+    },
+    "whois-lookup": {
+      "name": "WHOIS Lookup",
+      "description": "Domain registration information lookup",
+      "placeholder": "Enter domain, e.g., example.com",
+      "button": "Lookup",
+      "error": "Lookup failed, please check your network connection or try again later",
+      "domain": "Domain",
+      "registrar": "Registrar",
+      "registrant": "Registrant",
+      "createdDate": "Creation Date",
+      "expiryDate": "Expiry Date",
+      "nameservers": "Nameservers",
+      "status": "Domain Status",
+      "rawData": "Raw Data",
+      "placeholderText": "Enter domain to lookup WHOIS information"
+    },
+    "ssl-checker": {
+      "name": "SSL Certificate Checker",
+      "description": "Check domain SSL validity/issuer/SANS",
+      "placeholder": "Enter domain, e.g., example.com",
+      "button": "Check",
+      "error": "Check failed, please check your network connection or try again later",
+      "valid": "SSL certificate is valid",
+      "invalid": "SSL certificate is invalid",
+      "issuer": "Issuer",
+      "daysRemaining": "Days Remaining",
+      "validFrom": "Valid From",
+      "validTo": "Valid To",
+      "signatureAlgorithm": "Signature Algorithm",
+      "serialNumber": "Serial Number",
+      "sans": "Subject Alternative Names (SANs)",
+      "placeholderText": "Enter domain to check SSL certificate",
+      "expired": "Expired {{days}} days ago",
+      "daysLeft": "{{days}} days"
+    },
+    "headers-check": {
+      "name": "HTTP Security Headers Check",
+      "description": "Check security headers coverage for target URL",
+      "placeholder": "Enter URL, e.g., https://example.com",
+      "button": "Check",
+      "error": "Check failed, please check your network connection or try again later",
+      "target": "Target",
+      "score": "Score",
+      "grade": "Grade",
+      "headerName": "Header Name",
+      "severity": "Severity",
+      "recommendation": "Recommendation",
+      "present": "Present",
+      "missing": "Missing",
+      "high": "High",
+      "medium": "Medium",
+      "low": "Low",
+      "placeholderText": "Enter URL to check HTTP security headers"
+    }
+  },
+  "header": {
+    "github": "GitHub Repository",
+    "openMenu": "Open Menu"
+  },
+  "sidebar": {
+    "favorites": "Favorites",
+    "recent": "Recent",
+    "allTools": "All Tools"
+  },
+  "toolCard": {
+    "new": "NEW"
+  },
+  "toolLayout": {
+    "copyOutput": "Copy Output",
+    "addToFavorites": "Add to Favorites",
+    "removeFromFavorites": "Remove from Favorites"
+  }
+}

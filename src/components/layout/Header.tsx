@@ -1,15 +1,17 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from '@tanstack/react-router'
-import { Search, Command, Menu, Github } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
+import { Search, Command, Menu, ExternalLink } from 'lucide-react'
 import { Command as Cmd, CommandInput, CommandList, CommandItem, CommandEmpty, CommandGroup } from 'cmdk'
 import { searchTools } from '@/registry'
 import type { ToolMeta } from '@toolbox/types/tool'
-import { CATEGORY_LABELS } from '@toolbox/types/tool'
 import { getIconComponent } from '@/utils/icons'
 import { ThemeToggle } from '@/components/ui/ThemeToggle'
+import { LanguageToggle } from '@/components/ui/LanguageToggle'
 import { useAppStore } from '@/store/app'
 
 export function Header() {
+  const { t } = useTranslation()
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState('')
   const navigate = useNavigate()
@@ -43,7 +45,7 @@ export function Header() {
         <button
           onClick={toggleMobileMenu}
           className="lg:hidden flex items-center justify-center w-9 h-9 rounded-lg text-text-secondary hover:text-text-primary hover:bg-bg-raised transition-colors"
-          aria-label="打开菜单"
+          aria-label={t('header.openMenu')}
         >
           <Menu className="w-5 h-5" />
         </button>
@@ -53,7 +55,7 @@ export function Header() {
           className="flex-1 max-w-md flex items-center gap-2 px-3 py-2 rounded-lg bg-bg-raised border border-border-base text-text-muted text-sm hover:border-border-strong transition-colors duration-150"
         >
           <Search className="w-4 h-4" />
-          <span className="flex-1 text-left truncate">搜索工具...</span>
+          <span className="flex-1 text-left truncate">{t('app.searchPlaceholder')}</span>
           <kbd className="hidden sm:flex items-center gap-1 px-1.5 py-0.5 rounded bg-bg-overlay text-xs font-mono">
             <Command className="w-3 h-3" />K
           </kbd>
@@ -65,10 +67,14 @@ export function Header() {
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center justify-center w-9 h-9 rounded-lg text-text-secondary hover:text-text-primary hover:bg-bg-raised transition-colors"
-            aria-label="GitHub 仓库"
+            aria-label={t('header.github')}
           >
-            <Github className="w-5 h-5" />
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/>
+              <path d="M9 18c-4.51 2-5-2-7-2"/>
+            </svg>
           </a>
+          <LanguageToggle />
           <ThemeToggle />
         </div>
       </header>
@@ -81,7 +87,7 @@ export function Header() {
               <div className="flex items-center gap-2 px-4 py-3">
                 <Search className="w-4 h-4 text-text-muted flex-shrink-0" />
                 <CommandInput
-                  placeholder="搜索工具..."
+                  placeholder={t('search.placeholder')}
                   className="flex-1 bg-transparent text-text-primary placeholder-text-muted outline-none text-sm"
                   value={query}
                   onValueChange={setQuery}
@@ -89,15 +95,15 @@ export function Header() {
               </div>
               <CommandList className="max-h-80 overflow-y-auto p-2">
                 <CommandEmpty className="py-8 text-center text-text-muted text-sm">
-                  没有找到相关工具
+                  {t('search.noResults')}
                 </CommandEmpty>
                 <SearchResults query={query} onSelect={handleSelect} />
               </CommandList>
             </Cmd>
             <div className="px-4 py-2 border-t border-border-base flex items-center gap-4 text-xs text-text-muted">
-              <span className="flex items-center gap-1"><kbd className="font-mono">↑↓</kbd> 导航</span>
-              <span className="flex items-center gap-1"><kbd className="font-mono">↵</kbd> 打开</span>
-              <span className="flex items-center gap-1"><kbd className="font-mono">Esc</kbd> 关闭</span>
+              <span className="flex items-center gap-1"><kbd className="font-mono">↑↓</kbd> {t('search.shortcuts.navigate')}</span>
+              <span className="flex items-center gap-1"><kbd className="font-mono">↵</kbd> {t('search.shortcuts.open')}</span>
+              <span className="flex items-center gap-1"><kbd className="font-mono">Esc</kbd> {t('search.shortcuts.close')}</span>
             </div>
           </div>
         </div>
@@ -107,6 +113,7 @@ export function Header() {
 }
 
 function SearchResults({ query, onSelect }: { query: string; onSelect: (t: ToolMeta) => void }) {
+  const { t } = useTranslation()
   const results = searchTools(query)
 
   const grouped = results.reduce<Record<string, ToolMeta[]>>((acc, tool) => {
@@ -118,7 +125,7 @@ function SearchResults({ query, onSelect }: { query: string; onSelect: (t: ToolM
   return (
     <>
       {Object.entries(grouped).map(([cat, tools]) => (
-        <CommandGroup key={cat} heading={CATEGORY_LABELS[cat as keyof typeof CATEGORY_LABELS]} className="[&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:text-text-muted [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5">
+        <CommandGroup key={cat} heading={t(`categories.${cat}`)} className="[&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:text-text-muted [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5">
           {tools.map(tool => {
             const IconComp = getIconComponent(tool.icon)
             return (
@@ -136,7 +143,7 @@ function SearchResults({ query, onSelect }: { query: string; onSelect: (t: ToolM
                   <span className="text-sm font-medium">{tool.name}</span>
                   <p className="text-xs text-text-muted truncate">{tool.description}</p>
                 </div>
-                {tool.isNew && <span className="badge text-xs">NEW</span>}
+                {tool.isNew && <span className="badge text-xs">{t('toolCard.new')}</span>}
               </CommandItem>
             )
           })}

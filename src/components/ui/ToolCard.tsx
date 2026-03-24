@@ -1,30 +1,36 @@
 import { Link } from '@tanstack/react-router'
+import { useTranslation } from 'react-i18next'
 import { Star } from 'lucide-react'
 import type { ToolMeta } from '@toolbox/types/tool'
 import { useAppStore } from '@/store/app'
 import { getIconComponent } from '@/utils/icons'
+import { usePreloadTool } from '@/hooks/usePreloadTool'
 
 interface ToolCardProps {
   tool: ToolMeta
 }
 
 export function ToolCard({ tool }: ToolCardProps) {
+  const { t } = useTranslation()
   const { isFavorited, toggleFavorite } = useAppStore()
   const favorited = isFavorited(tool.id)
   const IconComp = getIconComponent(tool.icon)
+  const { preload } = usePreloadTool(tool.id)
 
   return (
     <Link
       to="/tool/$id"
       params={{ id: tool.id }}
       className="card p-4 group flex flex-col gap-3 cursor-pointer"
+      onMouseEnter={preload}
+      onTouchStart={preload}
     >
       <div className="flex items-start justify-between">
         <div className="w-9 h-9 rounded-lg bg-accent/8 border border-accent/15 flex items-center justify-center group-hover:bg-accent/15 transition-colors duration-150">
           {IconComp && <IconComp className="w-4 h-4 text-accent" />}
         </div>
         <div className="flex items-center gap-1.5">
-          {tool.isNew && <span className="badge text-xs">NEW</span>}
+          {tool.isNew && <span className="badge text-xs">{t('toolCard.new')}</span>}
           <button
             onClick={e => { e.preventDefault(); toggleFavorite(tool.id) }}
             className="opacity-0 group-hover:opacity-100 transition-opacity duration-150 p-1 rounded hover:bg-bg-overlay"

@@ -1,6 +1,7 @@
 import { Link, useRouterState } from '@tanstack/react-router'
+import { useTranslation } from 'react-i18next'
 import { Wrench, X } from 'lucide-react'
-import { CATEGORY_LABELS, CATEGORY_ICONS, CATEGORY_ORDER } from '@toolbox/types/tool'
+import { CATEGORY_ICONS, CATEGORY_ORDER } from '@toolbox/types/tool'
 import { toolRegistry } from '@/registry'
 import { getIconComponent } from '@/utils/icons'
 import { useAppStore } from '@/store/app'
@@ -8,6 +9,7 @@ import { useAppStore } from '@/store/app'
 const categories = CATEGORY_ORDER
 
 export function Sidebar() {
+  const { t } = useTranslation()
   const routerState = useRouterState()
   const pathname = routerState.location.pathname
   const { favorites, mobileMenuOpen, setMobileMenuOpen } = useAppStore()
@@ -33,12 +35,12 @@ export function Sidebar() {
         </div>
 
         <nav className="flex-1 px-2 py-3 space-y-0.5">
-          <NavItem to="/" label="所有工具" icon="LayoutGrid" active={pathname === '/'} count={toolRegistry.length} onClick={handleNavClick} />
-          <NavItem to="/favorites" label="收藏夹" icon="Star" active={pathname === '/favorites'} count={favorites.length} onClick={handleNavClick} />
-          <NavItem to="/history" label="最近使用" icon="Clock" active={pathname === '/history'} onClick={handleNavClick} />
+          <NavItem to="/" label={t('sidebar.allTools')} icon="LayoutGrid" active={pathname === '/'} count={toolRegistry.length} onClick={handleNavClick} />
+          <NavItem to="/favorites" label={t('sidebar.favorites')} icon="Star" active={pathname === '/favorites'} count={favorites.length} onClick={handleNavClick} />
+          <NavItem to="/history" label={t('sidebar.recent')} icon="Clock" active={pathname === '/history'} onClick={handleNavClick} />
 
           <div className="pt-3 pb-1">
-            <p className="px-3 text-xs font-medium text-text-muted uppercase tracking-wider">分类</p>
+            <p className="px-3 text-xs font-medium text-text-muted uppercase tracking-wider">{t('nav.allTools')}</p>
           </div>
 
           {categories.map(cat => {
@@ -58,7 +60,7 @@ export function Sidebar() {
                   }`}
               >
                 {IconComp && <IconComp className="w-4 h-4 flex-shrink-0" />}
-                <span className="flex-1 truncate">{CATEGORY_LABELS[cat]}</span>
+                <span className="flex-1 truncate">{t(`categories.${cat}`)}</span>
                 <span className={`text-xs tabular-nums ${isActive ? 'text-accent/60' : 'text-text-muted'}`}>
                   {count}
                 </span>
@@ -69,7 +71,7 @@ export function Sidebar() {
 
         <div className="px-4 py-3 border-t border-border-base">
           <p className="text-xs text-text-muted">
-            {toolRegistry.length} 个工具
+            {toolRegistry.length} {t('nav.allTools').toLowerCase()}
           </p>
         </div>
       </aside>
@@ -93,19 +95,19 @@ export function Sidebar() {
               <button
                 onClick={() => setMobileMenuOpen(false)}
                 className="flex items-center justify-center w-8 h-8 rounded-lg text-text-secondary hover:text-text-primary hover:bg-bg-raised transition-colors"
-                aria-label="关闭菜单"
+                aria-label={t('common.close')}
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             <nav className="flex-1 px-2 py-3 space-y-0.5 overflow-y-auto">
-              <NavItem to="/" label="所有工具" icon="LayoutGrid" active={pathname === '/'} count={toolRegistry.length} onClick={handleNavClick} />
-              <NavItem to="/favorites" label="收藏夹" icon="Star" active={pathname === '/favorites'} count={favorites.length} onClick={handleNavClick} />
-              <NavItem to="/history" label="最近使用" icon="Clock" active={pathname === '/history'} onClick={handleNavClick} />
+              <NavItem to="/" label={t('sidebar.allTools')} icon="LayoutGrid" active={pathname === '/'} count={toolRegistry.length} onClick={handleNavClick} />
+              <NavItem to="/favorites" label={t('sidebar.favorites')} icon="Star" active={pathname === '/favorites'} count={favorites.length} onClick={handleNavClick} />
+              <NavItem to="/history" label={t('sidebar.recent')} icon="Clock" active={pathname === '/history'} onClick={handleNavClick} />
 
               <div className="pt-3 pb-1">
-                <p className="px-3 text-xs font-medium text-text-muted uppercase tracking-wider">分类</p>
+                <p className="px-3 text-xs font-medium text-text-muted uppercase tracking-wider">{t('nav.allTools')}</p>
               </div>
 
               {categories.map(cat => {
@@ -125,7 +127,7 @@ export function Sidebar() {
                       }`}
                   >
                     {IconComp && <IconComp className="w-4 h-4 flex-shrink-0" />}
-                    <span className="flex-1 truncate">{CATEGORY_LABELS[cat]}</span>
+                    <span className="flex-1 truncate">{t(`categories.${cat}`)}</span>
                     <span className={`text-xs tabular-nums ${isActive ? 'text-accent/60' : 'text-text-muted'}`}>
                       {count}
                     </span>
@@ -136,7 +138,7 @@ export function Sidebar() {
 
             <div className="px-4 py-3 border-t border-border-base">
               <p className="text-xs text-text-muted">
-                {toolRegistry.length} 个工具
+                {toolRegistry.length} {t('nav.allTools').toLowerCase()}
               </p>
             </div>
           </aside>

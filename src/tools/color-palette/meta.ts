@@ -8,5 +8,5 @@ export const meta: ToolMeta = {
   category: 'color',
   tags: ['颜色', '调色板', '配色'],
   keywords: ['color', 'palette', '配色', '调色板'],
-  icon: 'palette',
+  icon: 'Pipette',
 }
