@@ -689,7 +689,6 @@ Access-Control-Allow-Headers: Content-Type
 | 变量名 | 类型 | 说明 |
 |--------|------|------|
 | CACHE | KVNamespace | KV 缓存存储绑定 |
-| FILES | R2Bucket | R2 文件存储绑定 |
 | AI | Ai | Workers AI 绑定 |
 | ENVIRONMENT | string | 运行环境标识 |
 | EXCHANGE_API_KEY | string | 汇率 API 密钥（可选） |

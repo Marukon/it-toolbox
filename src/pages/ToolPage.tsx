@@ -137,6 +137,17 @@ const toolComponents: Record<string, React.LazyExoticComponent<() => JSX.Element
   // Phase 3.17 - 数字数学
   'prime-checker': lazy(() => import('@/tools/prime-checker/index')),
   'gcd-lcm': lazy(() => import('@/tools/gcd-lcm/index')),
+  // Phase 3.18 - 新增工具
+  'float-visualizer': lazy(() => import('@/tools/float-visualizer/index')),
+  'base-convert-ext': lazy(() => import('@/tools/base-convert-ext/index')),
+  'json-to-table': lazy(() => import('@/tools/json-to-table/index')),
+  'json-merge': lazy(() => import('@/tools/json-merge/index')),
+  'json-schema-verify': lazy(() => import('@/tools/json-schema-verify/index')),
+  'css-clip-path': lazy(() => import('@/tools/css-clip-path/index')),
+  'flexbox-gen': lazy(() => import('@/tools/flexbox-gen/index')),
+  'barcode-gen': lazy(() => import('@/tools/barcode-gen/index')),
+  'ai-json-schema': lazy(() => import('@/tools/ai-json-schema/index')),
+  'ai-commit-msg': lazy(() => import('@/tools/ai-commit-msg/index')),
 }
 
 function ToolSkeleton() {

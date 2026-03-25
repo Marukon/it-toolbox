@@ -119,6 +119,17 @@ const toolLoaders: Record<string, () => Promise<unknown>> = {
   'headers-check': () => import('@/tools/headers-check/index'),
   'prime-checker': () => import('@/tools/prime-checker/index'),
   'gcd-lcm': () => import('@/tools/gcd-lcm/index'),
+  // Phase 3.18 - 新增工具
+  'float-visualizer': () => import('@/tools/float-visualizer/index'),
+  'base-convert-ext': () => import('@/tools/base-convert-ext/index'),
+  'json-to-table': () => import('@/tools/json-to-table/index'),
+  'json-merge': () => import('@/tools/json-merge/index'),
+  'json-schema-verify': () => import('@/tools/json-schema-verify/index'),
+  'css-clip-path': () => import('@/tools/css-clip-path/index'),
+  'flexbox-gen': () => import('@/tools/flexbox-gen/index'),
+  'barcode-gen': () => import('@/tools/barcode-gen/index'),
+  'ai-json-schema': () => import('@/tools/ai-json-schema/index'),
+  'ai-commit-msg': () => import('@/tools/ai-commit-msg/index'),
 }
 
 export function usePreloadTool(toolId: string) {

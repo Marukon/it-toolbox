@@ -12,7 +12,6 @@ import { headersCheckRoute } from './routes/headers-check'
 
 export interface Env {
   CACHE: KVNamespace
-  FILES: R2Bucket
   AI: Ai
   ENVIRONMENT: string
   EXCHANGE_API_KEY: string

@@ -85,3 +85,71 @@ All text must be in Chinese. Be specific and actionable.`
     return c.json({ success: false, error: 'Failed to parse AI response' }, 500)
   }
 })
+
+aiRoute.post('/json-schema', async (c) => {
+  const { json } = await c.req.json<{ json: string }>()
+  if (!json?.trim()) return c.json({ success: false, error: 'json is required' }, 400)
+  if (json.length > 8000) return c.json({ success: false, error: 'JSON too long (max 8000 chars)' }, 400)
+
+  const messages = [
+    {
+      role: 'system',
+      content: `You are a JSON Schema expert. Given a JSON sample, generate a comprehensive JSON Schema with Chinese descriptions. Return ONLY a valid JSON object (no markdown, no extra text) with this structure:
+{
+  "schema": "the complete JSON Schema as a formatted string with proper indentation",
+  "explanation": "brief explanation in Chinese about the schema structure"
+}
+The schema should include:
+- Proper type definitions
+- Required fields
+- Descriptions in Chinese for each property
+- Appropriate constraints (minLength, maxLength, minimum, maximum, pattern, etc.)
+- Handle nested objects and arrays correctly
+- Use Draft-07 JSON Schema format`
+    },
+    { role: 'user', content: `请为以下JSON生成JSON Schema：\n\n${json}` }
+  ]
+
+  const result = await c.env.AI.run(MODEL as keyof AiModels, { messages }) as { response: string }
+  try {
+    const parsed = JSON.parse(result.response.replace(/```json?|```/g, '').trim())
+    return c.json({ success: true, data: parsed })
+  } catch {
+    return c.json({ success: false, error: 'Failed to parse AI response' }, 500)
+  }
+})
+
+aiRoute.post('/commit-msg', async (c) => {
+  const { diff } = await c.req.json<{ diff: string }>()
+  if (!diff?.trim()) return c.json({ success: false, error: 'diff is required' }, 400)
+  if (diff.length > 8000) return c.json({ success: false, error: 'Diff too long (max 8000 chars)' }, 400)
+
+  const messages = [
+    {
+      role: 'system',
+      content: `You are a Git expert. Analyze the diff and generate a Conventional Commits message. Return ONLY a valid JSON object (no markdown, no extra text) with this structure:
+{
+  "message": "the complete commit message in Conventional Commits format",
+  "type": "feat/fix/docs/style/refactor/perf/test/chore",
+  "scope": "affected scope (optional, e.g., api, ui, auth)",
+  "description": "brief description in Chinese",
+  "body": "optional detailed explanation in Chinese if the change is complex"
+}
+Conventional Commits format: type(scope): description\n\n[optional body]\n\n[optional footer]
+Rules:
+- Use Chinese for description and body
+- Keep description under 50 characters
+- Use imperative mood (添加, 修复, 更新, etc.)
+- Be specific and concise`
+    },
+    { role: 'user', content: `请分析以下Git diff并生成提交信息：\n\n${diff}` }
+  ]
+
+  const result = await c.env.AI.run(MODEL as keyof AiModels, { messages }) as { response: string }
+  try {
+    const parsed = JSON.parse(result.response.replace(/```json?|```/g, '').trim())
+    return c.json({ success: true, data: parsed })
+  } catch {
+    return c.json({ success: false, error: 'Failed to parse AI response' }, 500)
+  }
+})

@@ -140,11 +140,6 @@ binding = "CACHE" #代码中通过 c.env.CACHE访问
 id = "你的真实KV-ID" #在Dashboard创建KV后填入
 preview_id = "Preview-KV-ID" #PR预览环境用的 KV
 
-# R2文件存储
-[[r2_buckets]]
-binding = "FILES"
-bucket_name = "toolbox-files"
-
 # Workers AI
 [ai]
 binding = "AI"
@@ -170,7 +165,6 @@ import { handle } from "hono/cloudflare-pages"
 
 export interface Env {
   CACHE: KVNamespace
-  FILES: R2Bucket
   AI: Ai
   ENVIRONMENT: string
   EXCHANGE_API_KEY: string
