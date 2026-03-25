@@ -1248,6 +1248,133 @@ export const toolRegistry: ToolMeta[] = [
     icon: 'ShieldCheck',
     isNew: true,
   },
+
+  // ─── Phase 3.12: 数字&数学(批次3) ───────────────────────────────────────────
+
+  {
+    id: 'float-visualizer',
+    name: '浮点数可视化',
+    nameEn: 'Float Visualizer',
+    description: 'IEEE754单精度/双精度位级展示，可视化浮点数存储结构',
+    category: 'converter',
+    tags: ['float', 'ieee754', 'binary', 'visualize', 'number'],
+    keywords: ['浮点数', 'IEEE754', '二进制', '可视化', '精度'],
+    icon: 'Binary',
+    isNew: true,
+  },
+  {
+    id: 'base-convert-ext',
+    name: '扩展进制转换',
+    nameEn: 'Extended Base Converter',
+    description: '2-36进制任意互转，支持小数部分',
+    category: 'converter',
+    tags: ['base', 'convert', 'radix', 'binary', 'hex', 'decimal'],
+    keywords: ['进制', '转换', '二进制', '十六进制', '小数'],
+    icon: 'Binary',
+    isNew: true,
+  },
+
+  // ─── Phase 3.13: JSON&数据工具扩展(批次3) ───────────────────────────────────
+
+  {
+    id: 'json-to-table',
+    name: 'JSON表格视图',
+    nameEn: 'JSON to Table',
+    description: 'JSON数组渲染为可排序可过滤的表格',
+    category: 'format',
+    tags: ['json', 'table', 'view', 'sort', 'filter'],
+    keywords: ['JSON', '表格', '视图', '排序', '过滤'],
+    icon: 'Table',
+    isNew: true,
+  },
+  {
+    id: 'json-merge',
+    name: 'JSON深度合并',
+    nameEn: 'JSON Deep Merge',
+    description: '两个JSON对象deep merge，冲突策略可选',
+    category: 'format',
+    tags: ['json', 'merge', 'deep', 'combine'],
+    keywords: ['JSON', '合并', '深度合并', '对象合并'],
+    icon: 'GitMerge',
+    isNew: true,
+  },
+  {
+    id: 'json-schema-verify',
+    name: 'JSON Schema验证',
+    nameEn: 'JSON Schema Validator',
+    description: '输入JSON+Schema，实时验证，错误定位',
+    category: 'format',
+    tags: ['json', 'schema', 'validate', 'ajv', 'verify'],
+    keywords: ['JSON', 'Schema', '验证', '校验', 'ajv'],
+    icon: 'FileCheck',
+    isNew: true,
+  },
+
+  // ─── Phase 3.14: HTML&CSS工具扩展(批次3) ───────────────────────────────────
+
+  {
+    id: 'css-clip-path',
+    name: 'CSS clip-path生成',
+    nameEn: 'CSS Clip-Path Generator',
+    description: '可视化编辑多边形/圆形/椭圆，实时预览',
+    category: 'color',
+    tags: ['css', 'clip-path', 'shape', 'polygon', 'circle', 'ellipse'],
+    keywords: ['CSS', 'clip-path', '裁剪', '多边形', '圆形'],
+    icon: 'Scissors',
+    isNew: true,
+  },
+  {
+    id: 'flexbox-gen',
+    name: 'Flexbox生成器',
+    nameEn: 'Flexbox Generator',
+    description: '可视化配置flexbox属性，实时预览',
+    category: 'color',
+    tags: ['css', 'flexbox', 'flex', 'layout', 'generator'],
+    keywords: ['CSS', 'Flexbox', '布局', '弹性盒子', '生成器'],
+    icon: 'LayoutGrid',
+    isNew: true,
+  },
+
+  // ─── Phase 3.15: 二维码&条形码(批次3) ───────────────────────────────────────
+
+  {
+    id: 'barcode-gen',
+    name: '条形码生成',
+    nameEn: 'Barcode Generator',
+    description: 'EAN-13/EAN-8/Code128/Code39，SVG/PNG导出',
+    category: 'generator',
+    tags: ['barcode', 'ean', 'code128', 'code39', 'generate', 'svg'],
+    keywords: ['条形码', 'EAN', 'Code128', 'Code39', '生成'],
+    icon: 'Barcode',
+    isNew: true,
+  },
+
+  // ─── Phase 4.1: AI增强工具扩展(批次3) ───────────────────────────────────────
+
+  {
+    id: 'ai-json-schema',
+    name: 'AI生成Schema',
+    nameEn: 'AI JSON Schema Generator',
+    description: '粘贴JSON样本，AI生成带注释的JSON Schema',
+    category: 'ai',
+    tags: ['ai', 'json', 'schema', 'generate', 'validate'],
+    keywords: ['AI', 'JSON', 'Schema', '生成', '验证'],
+    icon: 'Sparkles',
+    requiresApi: true,
+    isNew: true,
+  },
+  {
+    id: 'ai-commit-msg',
+    name: 'AI生成提交信息',
+    nameEn: 'AI Commit Message Generator',
+    description: '粘贴diff内容，AI生成Conventional Commit消息',
+    category: 'ai',
+    tags: ['ai', 'git', 'commit', 'conventional', 'message'],
+    keywords: ['AI', 'Git', '提交', 'Commit', 'Conventional'],
+    icon: 'GitCommit',
+    requiresApi: true,
+    isNew: true,
+  },
 ]
 
 export const searchIndex = new Fuse(toolRegistry, {
