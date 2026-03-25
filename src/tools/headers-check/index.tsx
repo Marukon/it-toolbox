@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react'
-import { ShieldCheck, Search, AlertCircle, CheckCircle, XCircle, AlertTriangle, Loader2 } from 'lucide-react'
+import { ShieldCheck, Search, AlertCircle, CheckCircle, XCircle, AlertTriangle, Loader2, Info } from 'lucide-react'
 import { ToolLayout } from '@/components/tool/ToolLayout'
 import { useAppStore } from '@/store/app'
 import { meta } from './meta'
@@ -10,6 +10,9 @@ interface HeaderCheck {
   value?: string
   recommendation: string
   severity: 'high' | 'medium' | 'low'
+  pass: boolean
+  scoreModifier: number
+  result: string
 }
 
 interface HeadersResult {
@@ -17,6 +20,11 @@ interface HeadersResult {
   headers: HeaderCheck[]
   score: number
   grade: string
+  warnings: string[]
+  source: string
+  testsFailed: number
+  testsPassed: number
+  testsQuantity: number
 }
 
 export default function HeadersCheck() {
@@ -48,7 +56,7 @@ export default function HeadersCheck() {
       } else {
         setResult(data)
       }
-    } catch (e) {
+    } catch {
       setError('检测失败，请检查网络连接或稍后重试')
     }
 
@@ -63,20 +71,20 @@ export default function HeadersCheck() {
 
   const getGradeColor = (grade: string) => {
     if (grade === 'A' || grade === 'A+') return 'text-green-500 bg-green-500/10'
-    if (grade === 'B') return 'text-blue-500 bg-blue-500/10'
-    if (grade === 'C') return 'text-yellow-500 bg-yellow-500/10'
-    if (grade === 'D') return 'text-orange-500 bg-orange-500/10'
+    if (grade === 'B' || grade === 'B-') return 'text-blue-500 bg-blue-500/10'
+    if (grade === 'C' || grade === 'C-') return 'text-yellow-500 bg-yellow-500/10'
+    if (grade === 'D' || grade === 'D-') return 'text-orange-500 bg-orange-500/10'
     return 'text-rose-500 bg-rose-500/10'
   }
 
-  const getSeverityIcon = (present: boolean, severity: string) => {
-    if (present) {
+  const getResultIcon = (header: HeaderCheck) => {
+    if (header.pass) {
       return <CheckCircle className="w-4 h-4 text-green-500" />
     }
-    if (severity === 'high') {
+    if (header.severity === 'high') {
       return <XCircle className="w-4 h-4 text-rose-500" />
     }
-    if (severity === 'medium') {
+    if (header.severity === 'medium') {
       return <AlertTriangle className="w-4 h-4 text-orange-500" />
     }
     return <AlertCircle className="w-4 h-4 text-yellow-500" />
@@ -119,6 +127,14 @@ export default function HeadersCheck() {
             <div>
               <span className="text-xs text-text-muted">检测目标</span>
               <p className="text-sm font-mono text-text-primary">{result.url}</p>
+              <p className="text-xs text-text-muted mt-1">
+                来源: {result.source}
+                {result.testsQuantity > 0 && (
+                  <span className="ml-2">
+                    | 测试: {result.testsPassed}/{result.testsQuantity} 通过
+                  </span>
+                )}
+              </p>
             </div>
             <div className={`px-4 py-2 rounded-xl ${getGradeColor(result.grade)}`}>
               <div className="text-2xl font-bold">{result.grade}</div>
@@ -126,12 +142,29 @@ export default function HeadersCheck() {
             </div>
           </div>
 
+          {result.warnings && result.warnings.length > 0 && (
+            <div className="p-4 rounded-xl bg-yellow-500/10 border border-yellow-500/20">
+              <div className="flex items-center gap-2 mb-2">
+                <Info className="w-4 h-4 text-yellow-500" />
+                <span className="text-sm font-medium text-yellow-400">安全建议</span>
+              </div>
+              <ul className="space-y-1">
+                {result.warnings.map((warning, i) => (
+                  <li key={i} className="text-xs text-yellow-300/80 flex items-start gap-2">
+                    <span className="text-yellow-500 mt-0.5">•</span>
+                    <span>{warning}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
           <div className="space-y-2">
             {result.headers.map((header, i) => (
               <div
                 key={i}
                 className={`p-4 rounded-xl border ${
-                  header.present
+                  header.pass
                     ? 'bg-green-500/5 border-green-500/20'
                     : header.severity === 'high'
                     ? 'bg-rose-500/5 border-rose-500/20'
@@ -139,7 +172,7 @@ export default function HeadersCheck() {
                 }`}
               >
                 <div className="flex items-start gap-3">
-                  {getSeverityIcon(header.present, header.severity)}
+                  {getResultIcon(header)}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
                       <span className="text-sm font-mono font-medium text-text-primary">
@@ -152,6 +185,11 @@ export default function HeadersCheck() {
                       }`}>
                         {header.severity === 'high' ? '重要' : header.severity === 'medium' ? '中等' : '建议'}
                       </span>
+                      {header.scoreModifier !== 0 && (
+                        <span className={`text-xs ${header.scoreModifier > 0 ? 'text-green-400' : 'text-rose-400'}`}>
+                          {header.scoreModifier > 0 ? '+' : ''}{header.scoreModifier}分
+                        </span>
+                      )}
                     </div>
                     {header.present && header.value && (
                       <p className="text-xs font-mono text-text-secondary mb-2 break-all">
@@ -163,6 +201,12 @@ export default function HeadersCheck() {
                 </div>
               </div>
             ))}
+          </div>
+
+          <div className="p-3 rounded-xl bg-bg-surface border border-border-base flex items-center justify-between">
+            <span className="text-xs text-text-muted">
+              数据来源: {result.source}
+            </span>
           </div>
         </div>
       )}

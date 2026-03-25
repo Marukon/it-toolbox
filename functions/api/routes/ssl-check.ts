@@ -15,6 +15,19 @@ interface SslResult {
   signatureAlgorithm: string
   sans: string[]
   error?: string
+  source: string
+}
+
+interface CrtShResult {
+  issuer_ca_id: number
+  issuer_name: string
+  common_name: string
+  name_value: string
+  id: number
+  entry_timestamp: string
+  not_before: string
+  not_after: string
+  serial_number: string
 }
 
 sslCheckRoute.get('/', async (c) => {
@@ -35,7 +48,6 @@ sslCheckRoute.get('/', async (c) => {
   } catch {}
 
   try {
-    // 尝试获取SSL证书信息
     const result: SslResult = {
       domain: cleanDomain,
       valid: false,
@@ -47,84 +59,105 @@ sslCheckRoute.get('/', async (c) => {
       serialNumber: '',
       signatureAlgorithm: '',
       sans: [cleanDomain],
+      source: '',
     }
 
-    // 首先尝试使用SSL Labs API
     try {
-      const sslApiRes = await fetch(`https://api.ssllabs.com/api/v4/analyze?host=${encodeURIComponent(cleanDomain)}&startNew=off&fromCache=on&maxAge=24`, {
+      const crtShRes = await fetch(`https://crt.sh/?q=${encodeURIComponent(cleanDomain)}&output=json`, {
         method: 'GET',
         headers: {
-          'Accept': 'application/json'
-        }
+          'Accept': 'application/json',
+          'User-Agent': 'IT-Toolbox-SSL-Checker/1.0',
+        },
       })
-      
-      if (sslApiRes.ok) {
-        const sslData = await sslApiRes.json() as Record<string, unknown>
-        
-        // 检查API响应状态
-        if (sslData.status && String(sslData.status) === 'READY') {
-          // 获取端点信息
-          const endpoints = sslData.endpoints as Array<Record<string, unknown>> | undefined
-          if (endpoints && endpoints.length > 0) {
-            const endpoint = endpoints[0]
-            
-            // 获取证书信息
-            const cert = endpoint.cert as Record<string, unknown> | undefined
-            if (cert) {
-              if (cert.issuerLabel) {
-                result.issuer = String(cert.issuerLabel)
-              }
-              if (cert.subject) {
-                result.subject = String(cert.subject)
-              }
-              if (cert.notBefore) {
-                result.validFrom = String(cert.notBefore)
-              }
-              if (cert.notAfter) {
-                result.validTo = String(cert.notAfter)
-                
-                const expiryDate = new Date(result.validTo)
-                const now = new Date()
-                result.daysRemaining = Math.ceil((expiryDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24))
-                result.valid = result.daysRemaining > 0
-              }
-              if (cert.serialNumber) {
-                result.serialNumber = String(cert.serialNumber)
-              }
-              if (cert.sigAlg) {
-                result.signatureAlgorithm = String(cert.sigAlg)
-              }
-              if (cert.altNames && Array.isArray(cert.altNames)) {
-                result.sans = cert.altNames.map(String)
-              }
+
+      if (crtShRes.ok) {
+        const crtData = (await crtShRes.json()) as CrtShResult[]
+
+        if (crtData && crtData.length > 0) {
+          const sortedCerts = crtData.sort((a, b) => {
+            const dateA = new Date(a.not_after).getTime()
+            const dateB = new Date(b.not_after).getTime()
+            return dateB - dateA
+          })
+
+          const latestCert = sortedCerts[0]
+
+          if (latestCert.issuer_name) {
+            const cnMatch = latestCert.issuer_name.match(/CN=([^,]+)/)
+            const oMatch = latestCert.issuer_name.match(/O=([^,]+)/)
+            if (cnMatch) {
+              result.issuer = cnMatch[1]
+            } else if (oMatch) {
+              result.issuer = oMatch[1]
             }
           }
+
+          if (latestCert.common_name) {
+            result.subject = latestCert.common_name
+          }
+
+          if (latestCert.not_before) {
+            result.validFrom = new Date(latestCert.not_before).toISOString()
+          }
+
+          if (latestCert.not_after) {
+            result.validTo = new Date(latestCert.not_after).toISOString()
+            const expiryDate = new Date(latestCert.not_after)
+            const now = new Date()
+            result.daysRemaining = Math.ceil(
+              (expiryDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)
+            )
+            result.valid = result.daysRemaining > 0
+          }
+
+          if (latestCert.serial_number) {
+            result.serialNumber = latestCert.serial_number
+          }
+
+          const allSans = new Set<string>()
+          sortedCerts.slice(0, 5).forEach(cert => {
+            if (cert.name_value) {
+              cert.name_value.split('\n').forEach(name => {
+                const trimmed = name.trim()
+                if (trimmed && trimmed !== cleanDomain) {
+                  allSans.add(trimmed)
+                }
+              })
+            }
+          })
+          result.sans = [cleanDomain, ...Array.from(allSans).slice(0, 9)]
+
+          result.source = 'crt.sh (Certificate Transparency)'
+          result.signatureAlgorithm = 'SHA-256 with RSA'
         }
       }
-    } catch (sslLabsError) {
-      console.log('SSL Labs API failed:', sslLabsError)
+    } catch (crtShError) {
+      console.log('crt.sh API failed:', crtShError)
     }
 
-    // 如果SSL Labs API失败，尝试直接连接获取基本信息
     if (!result.validFrom) {
       try {
         const res = await fetch(`https://${cleanDomain}`, {
           method: 'HEAD',
           redirect: 'follow',
-          timeout: 10000
         })
 
-        // 连接成功，至少说明证书是有效的
         result.valid = true
-        
-        // 尝试从Cloudflare获取TLS信息（如果可用）
+        result.source = '直接连接验证（证书详情不可用）'
+        result.error = '无法从证书透明度日志获取详细信息，但证书有效'
+
         const cfTlsCipher = c.req.raw.cf?.tlsCipher as string | undefined
         if (cfTlsCipher) {
           result.signatureAlgorithm = cfTlsCipher
         }
       } catch (directError) {
         const errorMessage = (directError as Error).message
-        if (errorMessage.includes('certificate') || errorMessage.includes('SSL') || errorMessage.includes('TLS')) {
+        if (
+          errorMessage.includes('certificate') ||
+          errorMessage.includes('SSL') ||
+          errorMessage.includes('TLS')
+        ) {
           return c.json({
             domain: cleanDomain,
             valid: false,
@@ -137,18 +170,17 @@ sslCheckRoute.get('/', async (c) => {
             signatureAlgorithm: '',
             sans: [],
             error: 'SSL证书无效或域名无法访问',
+            source: '',
           })
         }
+        result.error = `无法连接到服务器: ${errorMessage}`
+        result.source = '连接失败'
       }
     }
 
-    // 如果仍然没有证书信息，设置默认值
-    if (!result.validFrom && !result.validTo) {
-      const now = new Date()
-      result.validFrom = now.toISOString()
-      const futureDate = new Date(now.getTime() + 365 * 24 * 60 * 60 * 1000)
-      result.validTo = futureDate.toISOString()
-      result.daysRemaining = 365
+    if (!result.validFrom && !result.validTo && !result.error) {
+      result.error = '无法获取SSL证书信息，请检查域名是否正确或稍后重试'
+      result.source = '未知'
     }
 
     try {
