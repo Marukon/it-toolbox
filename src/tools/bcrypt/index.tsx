@@ -4,10 +4,12 @@ import { ToolLayout } from '@/components/tool/ToolLayout'
 import { useAppStore } from '@/store/app'
 import { meta } from './meta'
 import bcrypt from 'bcryptjs'
+import { useTranslation } from 'react-i18next'
 
 type Mode = 'hash' | 'verify'
 
 export default function BcryptTool() {
+  const { t } = useTranslation()
   const [password, setPassword] = useState('')
   const [hash, setHash] = useState('')
   const [result, setResult] = useState('')
@@ -45,13 +47,13 @@ export default function BcryptTool() {
     try {
       const match = await bcrypt.compare(password, hash)
       setVerifyResult(match)
-      setResult(match ? '密码匹配!' : '密码不匹配')
+      setResult(match ? t('tools.bcrypt.matchSuccess') : t('tools.bcrypt.matchFail'))
     } catch (e) {
       setError((e as Error).message)
       setResult('')
     }
     setIsProcessing(false)
-  }, [password, hash, addRecentTool])
+  }, [password, hash, addRecentTool, t])
 
   const reset = () => {
     setPassword('')
@@ -69,7 +71,7 @@ export default function BcryptTool() {
           disabled={isProcessing} 
           className="btn-primary"
         >
-          {isProcessing ? '处理中...' : (mode === 'hash' ? '生成哈希' : '验证密码')}
+          {isProcessing ? t('common.processing') : (mode === 'hash' ? t('tools.bcrypt.generateHash') : t('tools.bcrypt.verifyPassword'))}
         </button>
 
         <div className="flex items-center gap-1 bg-bg-raised rounded-lg p-1">
@@ -80,14 +82,14 @@ export default function BcryptTool() {
               className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors
                 ${mode === m ? 'bg-accent text-bg-base' : 'text-text-muted hover:text-text-primary'}`}
             >
-              {m === 'hash' ? '生成哈希' : '验证密码'}
+              {m === 'hash' ? t('tools.bcrypt.hashMode') : t('tools.bcrypt.verifyMode')}
             </button>
           ))}
         </div>
 
         {mode === 'hash' && (
           <div className="flex items-center gap-2 ml-2">
-            <span className="text-xs text-text-muted">Rounds:</span>
+            <span className="text-xs text-text-muted">{t('tools.bcrypt.rounds')}:</span>
             <input
               type="number"
               min="4"
@@ -102,31 +104,31 @@ export default function BcryptTool() {
 
       <div className="grid grid-cols-1 gap-4 h-[calc(100vh-16rem)]">
         <div className="flex flex-col gap-2">
-          <label className="text-xs font-medium text-text-muted uppercase tracking-wider">密码</label>
+          <label className="text-xs font-medium text-text-muted uppercase tracking-wider">{t('tools.bcrypt.password')}</label>
           <input
             type="text"
             value={password}
             onChange={e => { setPassword(e.target.value); setError(''); setVerifyResult(null) }}
-            placeholder="输入密码..."
+            placeholder={`${t('tools.bcrypt.password')}...`}
             className="px-3 py-2 rounded-lg bg-bg-raised border border-border-base text-sm text-text-primary placeholder:text-text-muted focus:outline-none focus:border-accent"
           />
         </div>
 
         {mode === 'verify' && (
           <div className="flex flex-col gap-2">
-            <label className="text-xs font-medium text-text-muted uppercase tracking-wider">哈希值</label>
+            <label className="text-xs font-medium text-text-muted uppercase tracking-wider">{t('tools.bcrypt.hashValue')}</label>
             <textarea
               className="tool-input h-20 font-mono text-xs leading-relaxed"
               value={hash}
               onChange={e => { setHash(e.target.value); setError(''); setVerifyResult(null) }}
-              placeholder="输入 Bcrypt 哈希值..."
+              placeholder={`${t('tools.bcrypt.hashValue')}...`}
               spellCheck={false}
             />
           </div>
         )}
 
         <div className="flex flex-col gap-2 flex-1">
-          <label className="text-xs font-medium text-text-muted uppercase tracking-wider">结果</label>
+          <label className="text-xs font-medium text-text-muted uppercase tracking-wider">{t('common.result')}</label>
           {error ? (
             <div className="flex-1 rounded-lg bg-rose-500/10 border border-rose-500/30 p-4">
               <p className="text-xs text-rose-400/80">{error}</p>
@@ -141,7 +143,7 @@ export default function BcryptTool() {
                 <X className="w-5 h-5 text-rose-500" />
               )}
               <p className={`text-sm font-medium ${verifyResult ? 'text-green-500' : 'text-rose-500'}`}>
-                {verifyResult ? '密码匹配!' : '密码不匹配'}
+                {verifyResult ? t('tools.bcrypt.matchSuccess') : t('tools.bcrypt.matchFail')}
               </p>
             </div>
           ) : (
@@ -149,7 +151,7 @@ export default function BcryptTool() {
               className="tool-input flex-1 font-mono text-xs leading-relaxed"
               value={result}
               readOnly
-              placeholder="结果将在这里显示..."
+              placeholder={t('tools.bcrypt.resultPlaceholder')}
               spellCheck={false}
             />
           )}

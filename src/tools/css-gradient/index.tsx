@@ -5,8 +5,10 @@ import { meta } from './meta'
 import { generateCssGradient, type GradientStop } from '@it-toolbox/core'
 import { useAppStore } from '@/store/app'
 import { useClipboard } from '@/hooks/useClipboard'
+import { useTranslation } from 'react-i18next'
 
 export default function CssGradientTool() {
+  const { t } = useTranslation()
   const [type, setType] = useState<'linear' | 'radial' | 'conic'>('linear')
   const [angle, setAngle] = useState(90)
   const [stops, setStops] = useState<GradientStop[]>([
@@ -59,21 +61,21 @@ export default function CssGradientTool() {
     <ToolLayout meta={meta} onReset={reset}>
       <div className="flex items-center gap-2 mb-4 flex-wrap">
         <div className="flex items-center gap-1 bg-bg-raised rounded-lg p-1">
-          {(['linear', 'radial', 'conic'] as const).map(t => (
+          {(['linear', 'radial', 'conic'] as const).map(typeKey => (
             <button
-              key={t}
-              onClick={() => setType(t)}
+              key={typeKey}
+              onClick={() => setType(typeKey)}
               className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors
-                ${type === t ? 'bg-accent text-bg-base' : 'text-text-muted hover:text-text-primary'}`}
+                ${type === typeKey ? 'bg-accent text-bg-base' : 'text-text-muted hover:text-text-primary'}`}
             >
-              {t === 'linear' ? '线性渐变' : t === 'radial' ? '径向渐变' : '锥形渐变'}
+              {typeKey === 'linear' ? t('tools.cssGradient.linear') : typeKey === 'radial' ? t('tools.cssGradient.radial') : t('tools.cssGradient.conic')}
             </button>
           ))}
         </div>
 
         {type === 'linear' && (
           <div className="flex items-center gap-2">
-            <span className="text-xs text-text-muted">角度</span>
+            <span className="text-xs text-text-muted">{t('tools.cssGradient.angle')}</span>
             <input
               type="number"
               value={angle}
@@ -89,10 +91,10 @@ export default function CssGradientTool() {
 
       <div className="p-4 bg-bg-surface border border-border-base rounded-lg mb-4">
         <div className="flex items-center justify-between mb-3">
-          <label className="text-xs font-medium text-text-muted uppercase tracking-wider">颜色节点</label>
+          <label className="text-xs font-medium text-text-muted uppercase tracking-wider">{t('tools.cssGradient.colorStops')}</label>
           <button onClick={addStop} className="btn-primary">
             <Plus className="w-4 h-4" />
-            添加节点
+            {t('tools.cssGradient.addStop')}
           </button>
         </div>
 
@@ -119,7 +121,7 @@ export default function CssGradientTool() {
                   onClick={() => removeStop(index)}
                   className="text-rose-400 hover:text-rose-300 text-sm"
                 >
-                  删除
+                  {t('common.remove')}
                 </button>
               )}
             </div>
@@ -134,10 +136,10 @@ export default function CssGradientTool() {
 
       <div className="p-4 bg-bg-surface border border-border-base rounded-lg">
         <div className="flex items-center justify-between mb-2">
-          <label className="text-xs font-medium text-text-muted uppercase tracking-wider">CSS 代码</label>
+          <label className="text-xs font-medium text-text-muted uppercase tracking-wider">{t('tools.cssGradient.cssCode')}</label>
           <button onClick={handleCopy} className="btn-ghost">
             {copied ? <Check className="w-4 h-4 text-accent" /> : <Copy className="w-4 h-4" />}
-            {copied ? '已复制' : '复制'}
+            {copied ? t('common.copied') : t('common.copy')}
           </button>
         </div>
         <code className="block text-sm font-mono text-text-primary break-all">
