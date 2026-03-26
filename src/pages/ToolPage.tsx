@@ -1,153 +1,22 @@
-import { lazy, Suspense, useEffect } from 'react'
+import { lazy, Suspense, useEffect, useMemo } from 'react'
 import { useParams } from '@tanstack/react-router'
 import { Loader2 } from 'lucide-react'
 import { useAppStore } from '@/store/app'
 
-const toolComponents: Record<string, React.LazyExoticComponent<() => JSX.Element>> = {
-  'json-formatter': lazy(() => import('@/tools/json-formatter/index')),
-  'base64': lazy(() => import('@/tools/base64/index')),
-  'url-encode': lazy(() => import('@/tools/url-encode/index')),
-  'jwt-decoder': lazy(() => import('@/tools/jwt-decoder/index')),
-  'uuid-generator': lazy(() => import('@/tools/uuid-generator/index')),
-  'hash-calculator': lazy(() => import('@/tools/hash-calculator/index')),
-  'password-gen': lazy(() => import('@/tools/password-gen/index')),
-  'timestamp': lazy(() => import('@/tools/timestamp/index')),
-  'case-converter': lazy(() => import('@/tools/case-converter/index')),
-  'lorem-ipsum': lazy(() => import('@/tools/lorem-ipsum/index')),
-  'color-picker': lazy(() => import('@/tools/color-picker/index')),
-  'markdown-preview': lazy(() => import('@/tools/markdown-preview/index')),
-  'regex-tester': lazy(() => import('@/tools/regex-tester/index')),
-  'number-base': lazy(() => import('@/tools/number-base/index')),
-  'text-counter': lazy(() => import('@/tools/text-counter/index')),
-  'aes-encrypt': lazy(() => import('@/tools/aes-encrypt/index')),
-  'ascii-table': lazy(() => import('@/tools/ascii-table/index')),
-  'bcrypt': lazy(() => import('@/tools/bcrypt/index')),
-  'binary-text': lazy(() => import('@/tools/binary-text/index')),
-  'box-shadow-gen': lazy(() => import('@/tools/box-shadow-gen/index')),
-  'calendar-gen': lazy(() => import('@/tools/calendar-gen/index')),
-  'cert-decoder': lazy(() => import('@/tools/cert-decoder/index')),
-  'color-blindness': lazy(() => import('@/tools/color-blindness/index')),
-  'color-palette': lazy(() => import('@/tools/color-palette/index')),
-  'contrast-checker': lazy(() => import('@/tools/contrast-checker/index')),
-  'cron-parser': lazy(() => import('@/tools/cron-parser/index')),
-  'css-formatter': lazy(() => import('@/tools/css-formatter/index')),
-  'css-gradient': lazy(() => import('@/tools/css-gradient/index')),
-  'csv-viewer': lazy(() => import('@/tools/csv-viewer/index')),
-  'curl-converter': lazy(() => import('@/tools/curl-converter/index')),
-  'date-calc': lazy(() => import('@/tools/date-calc/index')),
-  'duration-format': lazy(() => import('@/tools/duration-format/index')),
-  'faker-data': lazy(() => import('@/tools/faker-data/index')),
-  'hex-encode': lazy(() => import('@/tools/hex-encode/index')),
-  'hmac': lazy(() => import('@/tools/hmac/index')),
-  'html-entities': lazy(() => import('@/tools/html-entities/index')),
-  'http-headers': lazy(() => import('@/tools/http-headers/index')),
-  'http-status': lazy(() => import('@/tools/http-status/index')),
-  'ip-subnet': lazy(() => import('@/tools/ip-subnet/index')),
-  'js-formatter': lazy(() => import('@/tools/js-formatter/index')),
-  'json-to-type': lazy(() => import('@/tools/json-to-type/index')),
-  'jwt-generator': lazy(() => import('@/tools/jwt-generator/index')),
-  'line-sorter': lazy(() => import('@/tools/line-sorter/index')),
-  'mime-types': lazy(() => import('@/tools/mime-types/index')),
-  'morse-code': lazy(() => import('@/tools/morse-code/index')),
-  'nanoid-gen': lazy(() => import('@/tools/nanoid-gen/index')),
-  'objectid-gen': lazy(() => import('@/tools/objectid-gen/index')),
-  'placeholder-img': lazy(() => import('@/tools/placeholder-img/index')),
-  'punycode': lazy(() => import('@/tools/punycode/index')),
-  'qrcode': lazy(() => import('@/tools/qrcode/index')),
-  'rot13': lazy(() => import('@/tools/rot13/index')),
-  'rsa-keygen': lazy(() => import('@/tools/rsa-keygen/index')),
-  'sql-formatter': lazy(() => import('@/tools/sql-formatter/index')),
-  'ssh-keygen': lazy(() => import('@/tools/ssh-keygen/index')),
-  'string-escape': lazy(() => import('@/tools/string-escape/index')),
-  'tailwind-colors': lazy(() => import('@/tools/tailwind-colors/index')),
-  'text-diff': lazy(() => import('@/tools/text-diff/index')),
-  'text-similarity': lazy(() => import('@/tools/text-similarity/index')),
-  'text-transform': lazy(() => import('@/tools/text-transform/index')),
-  'timezone-convert': lazy(() => import('@/tools/timezone-convert/index')),
-  'toml-json': lazy(() => import('@/tools/toml-json/index')),
-  'ulid-gen': lazy(() => import('@/tools/ulid-gen/index')),
-  'unicode-convert': lazy(() => import('@/tools/unicode-convert/index')),
-  'url-parser': lazy(() => import('@/tools/url-parser/index')),
-  'user-agent': lazy(() => import('@/tools/user-agent/index')),
-  'xml-formatter': lazy(() => import('@/tools/xml-formatter/index')),
-  'yaml-json': lazy(() => import('@/tools/yaml-json/index')),
-  'ip-lookup': lazy(() => import('@/tools/ip-lookup/index')),
-  'dns-lookup': lazy(() => import('@/tools/dns-lookup/index')),
-  'ai-regex': lazy(() => import('@/tools/ai-regex/index')),
-  'ai-sql': lazy(() => import('@/tools/ai-sql/index')),
-  'ai-code-explain': lazy(() => import('@/tools/ai-code-explain/index')),
-  'ai-code-review': lazy(() => import('@/tools/ai-code-review/index')),
-  // Phase 3.1 - 图片&媒体
-  'svg-optimizer': lazy(() => import('@/tools/svg-optimizer/index')),
-  'svg-to-data-uri': lazy(() => import('@/tools/svg-to-data-uri/index')),
-  'favicon-gen': lazy(() => import('@/tools/favicon-gen/index')),
-  'exif-reader': lazy(() => import('@/tools/exif-reader/index')),
-  'color-extractor': lazy(() => import('@/tools/color-extractor/index')),
-  'image-compress': lazy(() => import('@/tools/image-compress/index')),
-  'image-convert': lazy(() => import('@/tools/image-convert/index')),
-  'image-resize': lazy(() => import('@/tools/image-resize/index')),
-  // Phase 3.2 - 开发规范&文档
-  'gitignore-gen': lazy(() => import('@/tools/gitignore-gen/index')),
-  'license-gen': lazy(() => import('@/tools/license-gen/index')),
-  'readme-gen': lazy(() => import('@/tools/readme-gen/index')),
-  'conventional-commit': lazy(() => import('@/tools/conventional-commit/index')),
-  'semver-calc': lazy(() => import('@/tools/semver-calc/index')),
-  'openapi-viewer': lazy(() => import('@/tools/openapi-viewer/index')),
-  'json-schema-gen': lazy(() => import('@/tools/json-schema-gen/index')),
-  // Phase 3.3 - 单位换算
-  'exchange-rate': lazy(() => import('@/tools/exchange-rate/index')),
-  // Phase 3.4 - 效率&协作
-  'api-playground': lazy(() => import('@/tools/api-playground/index')),
-  // Phase 3.5 - 二维码&条形码
-  'qrcode-reader': lazy(() => import('@/tools/qrcode-reader/index')),
-  // Phase 3.6 - JSON&数据工具
-  'json-path': lazy(() => import('@/tools/json-path/index')),
-  'json-to-csv': lazy(() => import('@/tools/json-to-csv/index')),
-  // Phase 3.7 - 数学&计算
-  'math-eval': lazy(() => import('@/tools/math-eval/index')),
-  // Phase 3.8 - HTML&CSS工具
-  'html-preview': lazy(() => import('@/tools/html-preview/index')),
-  // Phase 3.9 - SEO工具
-  'meta-tag-gen': lazy(() => import('@/tools/meta-tag-gen/index')),
-  // Phase 3.10 - 数据生成&测试
-  'hash-verify': lazy(() => import('@/tools/hash-verify/index')),
-  'jwt-verifier': lazy(() => import('@/tools/jwt-verifier/index')),
-  'password-strength': lazy(() => import('@/tools/password-strength/index')),
-  'json-gen': lazy(() => import('@/tools/json-gen/index')),
-  // Phase 3.11 - 单位换算扩展
-  'number-unit': lazy(() => import('@/tools/number-unit/index')),
-  'data-storage': lazy(() => import('@/tools/data-storage/index')),
-  // Phase 3.12 - 数据生成&测试扩展
-  'sql-gen': lazy(() => import('@/tools/sql-gen/index')),
-  'regex-gen': lazy(() => import('@/tools/regex-gen/index')),
-  // Phase 3.13 - 设计工具扩展
-  'color-space': lazy(() => import('@/tools/color-space/index')),
-  // Phase 3.14 - 时间工具扩展
-  'epoch-formats': lazy(() => import('@/tools/epoch-formats/index')),
-  // Phase 3.15 - 单位换算扩展
-  'aspect-ratio': lazy(() => import('@/tools/aspect-ratio/index')),
-  'css-unit-convert': lazy(() => import('@/tools/css-unit-convert/index')),
-  'roman-numeral': lazy(() => import('@/tools/roman-numeral/index')),
-  // Phase 3.16 - 网络进阶
-  'port-reference': lazy(() => import('@/tools/port-reference/index')),
-  'email-validate': lazy(() => import('@/tools/email-validate/index')),
-  'whois-lookup': lazy(() => import('@/tools/whois-lookup/index')),
-  'ssl-checker': lazy(() => import('@/tools/ssl-checker/index')),
-  'headers-check': lazy(() => import('@/tools/headers-check/index')),
-  // Phase 3.17 - 数字数学
-  'prime-checker': lazy(() => import('@/tools/prime-checker/index')),
-  'gcd-lcm': lazy(() => import('@/tools/gcd-lcm/index')),
-  // Phase 3.18 - 新增工具
-  'float-visualizer': lazy(() => import('@/tools/float-visualizer/index')),
-  'base-convert-ext': lazy(() => import('@/tools/base-convert-ext/index')),
-  'json-to-table': lazy(() => import('@/tools/json-to-table/index')),
-  'json-merge': lazy(() => import('@/tools/json-merge/index')),
-  'json-schema-verify': lazy(() => import('@/tools/json-schema-verify/index')),
-  'css-clip-path': lazy(() => import('@/tools/css-clip-path/index')),
-  'flexbox-gen': lazy(() => import('@/tools/flexbox-gen/index')),
-  'barcode-gen': lazy(() => import('@/tools/barcode-gen/index')),
-  'ai-json-schema': lazy(() => import('@/tools/ai-json-schema/index')),
-  'ai-commit-msg': lazy(() => import('@/tools/ai-commit-msg/index')),
+type ToolComponent = React.LazyExoticComponent<() => JSX.Element>
+
+const toolModules = import.meta.glob<{ default: () => JSX.Element }>('@/tools/*/index.tsx')
+
+const toolIds = Object.keys(toolModules).map(path => {
+  const match = path.match(/\/tools\/([^/]+)\/index\.tsx$/)
+  return match ? match[1] : ''
+}).filter(Boolean)
+
+function getToolComponent(toolId: string): ToolComponent | null {
+  const path = `/src/tools/${toolId}/index.tsx`
+  const loader = toolModules[path]
+  if (!loader) return null
+  return lazy(loader as () => Promise<{ default: () => JSX.Element }>)
 }
 
 function ToolSkeleton() {
@@ -188,13 +57,15 @@ function ComingSoon({ id }: { id: string }) {
 export function ToolPage() {
   const { id } = useParams({ from: '/tool/$id' })
   const { addRecentTool } = useAppStore()
-  const Component = toolComponents[id]
+  
+  const Component = useMemo(() => getToolComponent(id), [id])
+  const exists = toolIds.includes(id)
 
   useEffect(() => {
-    if (id in toolComponents) addRecentTool(id)
-  }, [id, addRecentTool])
+    if (exists) addRecentTool(id)
+  }, [id, exists, addRecentTool])
 
-  if (!(id in toolComponents)) return <div className="p-6"><ComingSoon id={id} /></div>
+  if (!exists || !Component) return <div className="p-6"><ComingSoon id={id} /></div>
 
   return (
     <div className="p-6 h-full">
