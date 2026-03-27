@@ -153,3 +153,200 @@ Rules:
     return c.json({ success: false, error: 'Failed to parse AI response' }, 500)
   }
 })
+
+aiRoute.post('/extract', async (c) => {
+  const { text, fields } = await c.req.json<{ text: string; fields?: string }>()
+  if (!text?.trim()) return c.json({ success: false, error: 'text is required' }, 400)
+  if (text.length > 4000) return c.json({ success: false, error: 'Text too long (max 4000 chars)' }, 400)
+
+  const fieldsHint = fields ? `\n\n用户希望提取以下字段：${fields}` : '\n\n自动识别并提取关键信息'
+
+  const messages = [
+    {
+      role: 'system',
+      content: `You are an information extraction expert. Extract structured data from unstructured text and return ONLY a valid JSON object (no markdown, no extra text) with this structure:
+{
+  "data": { "field1": "value1", "field2": "value2", ... },
+  "explanation": "brief explanation in Chinese about what was extracted"
+}
+Rules:
+- Extract relevant information based on the text content
+- Use appropriate data types (string, number, boolean, array)
+- If a field cannot be found, set it to null
+- All text in explanation must be in Chinese
+- Be accurate and don't hallucinate information not in the text`
+    },
+    { role: 'user', content: `请从以下文本中提取结构化信息：${fieldsHint}\n\n文本内容：\n${text}` }
+  ]
+
+  const result = await c.env.AI.run(MODEL as keyof AiModels, { messages }) as { response: string }
+  try {
+    const parsed = JSON.parse(result.response.replace(/```json?|```/g, '').trim())
+    return c.json({ success: true, data: parsed })
+  } catch {
+    return c.json({ success: false, error: 'Failed to parse AI response' }, 500)
+  }
+})
+
+aiRoute.post('/translate', async (c) => {
+  const { text, sourceLang, targetLang } = await c.req.json<{ text: string; sourceLang: string; targetLang: string }>()
+  if (!text?.trim()) return c.json({ success: false, error: 'text is required' }, 400)
+  if (text.length > 4000) return c.json({ success: false, error: 'Text too long (max 4000 chars)' }, 400)
+
+  const sourceHint = sourceLang === 'auto' ? '自动检测源语言' : `源语言：${sourceLang}`
+  const messages = [
+    {
+      role: 'system',
+      content: `You are a professional translator specializing in technical documentation. Translate the text and return ONLY a valid JSON object (no markdown, no extra text) with this structure:
+{
+  "translation": "translated text here",
+  "detectedLanguage": "detected source language (only when sourceLang is auto)",
+  "notes": "optional notes about technical terms preserved or translation decisions"
+}
+Rules:
+- Preserve technical terms, code snippets, and proper nouns
+- Maintain the original formatting and structure
+- Use natural, fluent language for the target language
+- All notes must be in Chinese`
+    },
+    { role: 'user', content: `${sourceHint}\n目标语言：${targetLang}\n\n需要翻译的文本：\n${text}` }
+  ]
+
+  const result = await c.env.AI.run(MODEL as keyof AiModels, { messages }) as { response: string }
+  try {
+    const parsed = JSON.parse(result.response.replace(/```json?|```/g, '').trim())
+    return c.json({ success: true, data: parsed })
+  } catch {
+    return c.json({ success: false, error: 'Failed to parse AI response' }, 500)
+  }
+})
+
+aiRoute.post('/error-explain', async (c) => {
+  const { errorText, context } = await c.req.json<{ errorText: string; context?: string }>()
+  if (!errorText?.trim()) return c.json({ success: false, error: 'errorText is required' }, 400)
+  if (errorText.length > 4000) return c.json({ success: false, error: 'Error text too long (max 4000 chars)' }, 400)
+
+  const contextHint = context ? `\n\n上下文信息：${context}` : ''
+  const messages = [
+    {
+      role: 'system',
+      content: `You are a debugging expert. Analyze error messages and provide explanations and solutions. Return ONLY a valid JSON object (no markdown, no extra text) with this structure:
+{
+  "cause": "root cause explanation in Chinese",
+  "explanation": "detailed explanation in Chinese",
+  "solutions": ["solution 1", "solution 2", ...],
+  "relatedDocs": "optional related documentation or resources"
+}
+Rules:
+- Identify the root cause of the error
+- Provide clear, actionable solutions
+- All text must be in Chinese
+- Be specific and practical`
+    },
+    { role: 'user', content: `请分析以下错误信息并提供解决方案：${contextHint}\n\n错误信息：\n${errorText}` }
+  ]
+
+  const result = await c.env.AI.run(MODEL as keyof AiModels, { messages }) as { response: string }
+  try {
+    const parsed = JSON.parse(result.response.replace(/```json?|```/g, '').trim())
+    return c.json({ success: true, data: parsed })
+  } catch {
+    return c.json({ success: false, error: 'Failed to parse AI response' }, 500)
+  }
+})
+
+aiRoute.post('/naming', async (c) => {
+  const { description, style, type } = await c.req.json<{ description: string; style: string; type: string }>()
+  if (!description?.trim()) return c.json({ success: false, error: 'description is required' }, 400)
+
+  const messages = [
+    {
+      role: 'system',
+      content: `You are a naming expert for programming. Generate appropriate names based on descriptions. Return ONLY a valid JSON object (no markdown, no extra text) with this structure:
+{
+  "suggestions": [
+    { "name": "suggestedName", "type": "variable/function/class/constant", "style": "naming style used", "explanation": "why this name is good" }
+  ]
+}
+Rules:
+- Generate 3-5 different suggestions
+- Follow the requested naming style (${style})
+- Consider the type (${type})
+- Names should be clear, meaningful, and follow best practices
+- All explanations must be in Chinese`
+    },
+    { role: 'user', content: `功能描述：${description}\n命名风格：${style}\n类型：${type}` }
+  ]
+
+  const result = await c.env.AI.run(MODEL as keyof AiModels, { messages }) as { response: string }
+  try {
+    const parsed = JSON.parse(result.response.replace(/```json?|```/g, '').trim())
+    return c.json({ success: true, data: parsed })
+  } catch {
+    return c.json({ success: false, error: 'Failed to parse AI response' }, 500)
+  }
+})
+
+aiRoute.post('/mock-data', async (c) => {
+  const { description, count } = await c.req.json<{ description: string; count: number }>()
+  if (!description?.trim()) return c.json({ success: false, error: 'description is required' }, 400)
+
+  const messages = [
+    {
+      role: 'system',
+      content: `You are a mock data generator. Generate realistic test data based on descriptions. Return ONLY a valid JSON object (no markdown, no extra text) with this structure:
+{
+  "data": [ ... array of ${count} mock objects ... ],
+  "explanation": "brief explanation in Chinese about the generated data"
+}
+Rules:
+- Generate exactly ${count} items
+- Data should look realistic (e.g., real-looking names, valid email formats, reasonable prices)
+- Use appropriate data types
+- All explanations must be in Chinese`
+    },
+    { role: 'user', content: `数据描述：${description}\n生成数量：${count}` }
+  ]
+
+  const result = await c.env.AI.run(MODEL as keyof AiModels, { messages }) as { response: string }
+  try {
+    const parsed = JSON.parse(result.response.replace(/```json?|```/g, '').trim())
+    return c.json({ success: true, data: parsed })
+  } catch {
+    return c.json({ success: false, error: 'Failed to parse AI response' }, 500)
+  }
+})
+
+aiRoute.post('/shell-cmd', async (c) => {
+  const { description } = await c.req.json<{ description: string }>()
+  if (!description?.trim()) return c.json({ success: false, error: 'description is required' }, 400)
+
+  const messages = [
+    {
+      role: 'system',
+      content: `You are a shell command expert. Generate shell commands based on natural language descriptions. Return ONLY a valid JSON object (no markdown, no extra text) with this structure:
+{
+  "bash": "bash command here",
+  "powershell": "powershell equivalent command here",
+  "explanation": "what the command does in Chinese",
+  "warnings": ["warning 1", "warning 2"],
+  "isDangerous": true/false
+}
+Rules:
+- Provide both Bash and PowerShell equivalents when possible
+- Mark dangerous commands (rm -rf, format, etc.) with isDangerous: true
+- Include warnings for potentially harmful operations
+- All explanations must be in Chinese
+- Commands should be safe and follow best practices`
+    },
+    { role: 'user', content: `描述：${description}` }
+  ]
+
+  const result = await c.env.AI.run(MODEL as keyof AiModels, { messages }) as { response: string }
+  try {
+    const parsed = JSON.parse(result.response.replace(/```json?|```/g, '').trim())
+    return c.json({ success: true, data: parsed })
+  } catch {
+    return c.json({ success: false, error: 'Failed to parse AI response' }, 500)
+  }
+})
