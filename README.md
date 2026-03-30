@@ -22,7 +22,7 @@
 | 资源类型 | 链接 | 备注 |
 |---------|------|------|
 | 📖 项目文档 | 👉 [完整介绍](https://zread.ai/Zoroaaa/it-toolbox) | 详细的项目说明和使用指南 |
-| 🚀 在线体验 | 👉 [https://ittool.pp.ua](https://ittool.pp.ua) | 体验完整功能 |
+| 🚀 在线体验 | 👉 [https://ittool.wort.uk](https://ittool.wort.uk) | 体验完整功能 |
 
 </div>
 
