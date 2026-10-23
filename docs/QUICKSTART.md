@@ -119,8 +119,11 @@ IT Toolbox 包含 10 大类共 72 款工具：
 ### 单位换算（1 款）
 - 进制转换
 
-### AI 增强（3 款）
-- AI 代码解释、AI 生成正则、AI 生成 SQL
+### AI 增强（12 款）
+- AI 代码解释、AI 生成正则、AI 生成 SQL、AI 代码 Review、AI 生成 Schema、AI 生成提交信息、AI 结构化提取、AI 翻译、AI 报错解释、AI 命名助手、AI 生成 Mock 数据、AI Shell 命令生成
+
+### DevOps（4 款）
+- Sitemap 生成、robots.txt 生成、.htaccess 生成、Changelog 生成
 
 ---
 

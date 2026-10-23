@@ -2,9 +2,9 @@
 
 <div align="center">
 
-**开发者工具箱** — 72 款实用工具，基于 Cloudflare Pages Functions 全栈部署
+**开发者工具箱** — 146 款实用工具，基于 Cloudflare Pages Functions 全栈部署
 
-[![Version](https://img.shields.io/badge/version-2.0.0-blue.svg)](https://github.com/your-username/it-toolbox)
+[![Version](https://img.shields.io/badge/version-3.0.0-blue.svg)](https://github.com/your-username/it-toolbox)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Cloudflare](https://img.shields.io/badge/Cloudflare-Pages-orange.svg)](https://pages.cloudflare.com/)
 [![zread](https://img.shields.io/badge/Ask_Zread-_.svg?style=flat&color=00b0aa&labelColor=000000&logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTQuOTYxNTYgMS42MDAxSDIuMjQxNTZDMS44ODgxIDEuNjAwMSAxLjYwMTU2IDEuODg2NjQgMS42MDE1NiAyLjI0MDFWNC45NjAxQzEuNjAxNTYgNS4zMTM1NiAxLjg4ODEgNS42MDAxIDIuMjQxNTYgNS42MDAxSDQuOTYxNTZDNS4zMTUwMiA1LjYwMDEgNS42MDE1NiA1LjMxMzU2IDUuNjAxNTYgNC45NjAxVjIuMjQwMUM1LjYwMTU2IDEuODg2NjQgNS4zMTUwMiAxLjYwMDEgNC45NjE1NiAxLjYwMDFaIiBmaWxsPSIjZmZmIi8%2BCjxwYXRoIGQ9Ik00Ljk2MTU2IDEwLjM5OTlIMi4yNDE1NkMxLjg4ODEgMTAuMzk5OSAxLjYwMTU2IDEwLjY4NjQgMS42MDE1NiAxMS4wMzk5VjEzLjc1OTlDMS42MDE1NiAxNC4xMTM0IDEuODg4MSAxNC4zOTk5IDIuMjQxNTYgMTQuMzk5OUg0Ljk2MTU2QzUuMzE1MDIgMTQuMzk5OSA1LjYwMTU2IDE0LjExMzQgNS42MDE1NiAxMy43NTk5VjExLjAzOTlDNS42MDE1NiAxMC42ODY0IDUuMzE1MDIgMTAuMzk5OSA0Ljk2MTU2IDEwLjM5OTlaIiBmaWxsPSIjZmZmIi8%2BCjxwYXRoIGQ9Ik0xMy43NTg0IDEuNjAwMUgxMS4wMzg0QzEwLjY4NSAxLjYwMDEgMTAuMzk4NCAxLjg4NjY0IDEwLjM5ODQgMi4yNDAxVjQuOTYwMUMxMC4zOTg0IDUuMzEzNTYgMTAuNjg1IDUuNjAwMSAxMS4wMzg0IDUuNjAwMUgxMy43NTg0QzE0LjExMTkgNS42MDAxIDE0LjM5ODQgNS4zMTM1NiAxNC4zOTg0IDQuOTYwMVYyLjI0MDFDMTQuMzk4NCAxLjg4NjY0IDE0LjExMTkgMS42MDAxIDEzLjc1ODQgMS42MDAxWiIgZmlsbD0iI2ZmZiIvPgo8cGF0aCBkPSJNNCAxMkwxMiA0TDQgMTJaIiBmaWxsPSIjZmZmIi8%2BCjxwYXRoIGQ9Ik00IDEyTDEyIDQiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8L3N2Zz4K&logoColor=ffffff)](https://zread.ai/Zoroaaa/it-toolbox)
@@ -22,13 +22,13 @@
 | 资源类型 | 链接 | 备注 |
 |---------|------|------|
 | 📖 项目文档 | 👉 [完整介绍](https://zread.ai/Zoroaaa/it-toolbox) | 详细的项目说明和使用指南 |
-| 🚀 在线体验 | 👉 [https://ittool.pp.ua](https://ittool.pp.ua) | 体验完整功能 |
+| 🚀 在线体验 | 👉 [https://ittool.wort.uk](https://ittool.wort.uk) | 体验完整功能 |
 
 </div>
 
 ## 项目简介
 
-IT Toolbox 是一款面向开发者的在线工具箱，集成 72 款高频开发工具，覆盖格式化、编码解码、加密安全、网络查询、文本处理、颜色设计等多个类别。
+IT Toolbox 是一款面向开发者的在线工具箱，集成 146 款高频开发工具，覆盖格式化、编码解码、加密安全、网络查询、文本处理、颜色设计、AI增强等多个类别。
 
 ### 核心特性
 
@@ -60,16 +60,20 @@ IT Toolbox 是一款面向开发者的在线工具箱，集成 72 款高频开�
 
 | 分类 | 工具数量 | 说明 |
 |------|----------|------|
-| 格式化 | 9 | JSON/Markdown/YAML/XML/SQL/CSS/JS/TOML/CSV |
-| 编码解码 | 11 | Base64/URL/JWT/HTML实体/Hex/Unicode/摩斯密码等 |
-| 加密安全 | 8 | Hash/AES/RSA/HMAC/Bcrypt/SSH/JWT生成/证书解析 |
-| 网络 HTTP | 9 | IP查询/DNS/URL解析/HTTP状态码/MIME类型等 |
-| 文本处理 | 11 | 命名转换/正则测试/文本统计/Diff/相似度等 |
-| 颜色设计 | 7 | 颜色选择器/渐变生成/配色方案/WCAG对比度等 |
-| 时间日期 | 5 | 时间戳转换/日期计算/时区转换/时长格式化等 |
-| 生成器 | 8 | UUID/NanoID/ULID/ObjectID/密码/假数据/二维码等 |
-| 单位换算 | 1 | 进制转换 |
-| AI 增强 | 3 | AI代码解释/AI正则生成/AI SQL生成 |
+| 格式化 | 15 | JSON/Markdown/YAML/XML/SQL/CSS/JS/TOML/CSV/JSONPath/JSON转CSV/HTML预览/JSON表格/JSON合并/Schema验证 |
+| 编码解码 | 11 | Base64/URL/JWT/HTML实体/Hex/Unicode/摩斯密码/二进制/ROT13/Punycode/ASCII表 |
+| 加密安全 | 11 | Hash/AES/RSA/HMAC/Bcrypt/SSH/JWT生成/证书解析/文件校验/JWT验证/密码强度 |
+| 文本处理 | 13 | 命名转换/占位文本/正则测试/文本统计/Diff/变换/转义/Cron/相似度/行处理/JSON转类型/数学计算/正则生成 |
+| 颜色设计 | 10 | 颜色选择器/渐变生成/配色方案/对比度/色盲模拟/Tailwind色板/Box Shadow/色彩空间/clip-path/Flexbox |
+| 网络 HTTP | 15 | IP查询/DNS/URL解析/HTTP状态码/请求头/MIME类型/子网计算/UA解析/cURL转换/API测试/WHOIS/SSL检测/安全头/端口参考/邮箱验证 |
+| 时间日期 | 7 | 时间戳转换/日期计算/时区转换/时长格式化/日历生成/多格式时间 |
+| 生成器 | 12 | UUID/密码/NanoID/ULID/ObjectID/假数据/二维码生成/二维码识别/占位图/条形码/JSON生成/SQL生成 |
+| 图片媒体 | 8 | 图片压缩/格式转换/尺寸调整/SVG优化/SVG转DataURI/Favicon/EXIF/取色 |
+| 开发规范 | 8 | gitignore/许可证/README/Commit规范/SemVer/OpenAPI/JSON Schema/Meta标签 |
+| 单位换算 | 9 | 进制转换/汇率换算/数字单位/数据存储/色彩空间/CSS单位/宽高比/罗马数字/扩展进制 |
+| AI 增强 | 12 | AI代码解释/AI正则生成/AI SQL生成/AI代码Review/AI生成Schema/AI生成提交信息/AI结构化提取/AI翻译/AI报错解释/AI命名助手/AI生成Mock数据/AI Shell命令生成 |
+| DevOps | 4 | Sitemap生成/robots.txt生成/.htaccess生成/Changelog生成 |
+| **总计** | **146** | |
 
 ### 已实现工具（v2.0.0）
 
@@ -186,6 +190,7 @@ IT Toolbox 是一款面向开发者的在线工具箱，集成 72 款高频开�
 | 工具 | 说明 |
 |------|------|
 | 进制转换 | 二/八/十/十六进制互转 |
+| 汇率换算 | 实时汇率换算，支持 150+ 货币 |
 
 #### AI 增强
 
@@ -194,6 +199,65 @@ IT Toolbox 是一款面向开发者的在线工具箱，集成 72 款高频开�
 | AI 代码解释 | 智能解释代码逻辑 |
 | AI 生成正则 | 自然语言生成正则表达式 |
 | AI 生成 SQL | 自然语言生成 SQL 语句 |
+| AI 代码 Review | 安全漏洞、性能、可读性三维分析 |
+
+#### 图片处理
+
+| 工具 | 说明 |
+|------|------|
+| 图片压缩 | JPEG/PNG/WebP 图片压缩 |
+| 图片格式转换 | 图片格式互转 |
+| 图片尺寸调整 | 调整图片尺寸 |
+| SVG 优化 | SVG 文件优化压缩 |
+| SVG 转 Data URI | SVG 转换为 Data URI |
+| Favicon 生成 | 生成网站 Favicon |
+| EXIF 读取 | 读取图片 EXIF 信息 |
+| 颜色提取 | 从图片中提取主色调 |
+
+#### 开发规范
+
+| 工具 | 说明 |
+|------|------|
+| .gitignore 生成 | 生成 .gitignore 文件 |
+| 许可证生成 | 生成开源许可证文件 |
+| README 生成 | 生成 README 文件 |
+| Commit 规范 | Conventional Commit 格式化 |
+| SemVer 计算 | 语义版本号计算 |
+| OpenAPI 查看器 | OpenAPI/Swagger 文档查看 |
+| JSON Schema 生成 | JSON 数据生成 Schema |
+| Meta 标签生成 | 生成 SEO 友好的 Meta 标签 |
+
+#### JSON 数据工具
+
+| 工具 | 说明 |
+|------|------|
+| JSONPath 查询 | JSONPath 表达式查询 JSON |
+| JSON 转 CSV | JSON 数组转 CSV 格式 |
+
+#### 文本计算工具
+
+| 工具 | 说明 |
+|------|------|
+| 数学表达式计算 | 复杂数学表达式计算，支持函数、常量、单位换算 |
+
+#### HTML 工具
+
+| 工具 | 说明 |
+|------|------|
+| HTML 实时预览 | 实时预览 HTML/CSS/JS 代码 |
+
+#### 二维码工具
+
+| 工具 | 说明 |
+|------|------|
+| 二维码生成 | 生成二维码，支持文本、URL、WiFi 等格式 |
+| 二维码识别 | 上传图片或摄像头扫码识别二维码 |
+
+#### 网络 HTTP 工具（补充）
+
+| 工具 | 说明 |
+|------|------|
+| HTTP API 测试 | 类 Postman 界面，发送 HTTP 请求测试 API |
 
 ---
 
@@ -352,6 +416,14 @@ pnpm build
 pnpm deploy
 ```
 
+### Fork 用户部署须知
+
+> ⚠️ **重要**：本项目不包含 `wrangler.toml` 配置文件（已加入 `.gitignore`），Fork 用户需要自行创建配置文件或在 Cloudflare Dashboard 手动绑定资源。
+>
+> **推荐方式**：在 Cloudflare Dashboard 中绑定 KV、R2、AI 资源，无需创建 `wrangler.toml` 文件。
+>
+> **本地开发**：如需本地调试，请复制 `wrangler.example.toml` 为 `wrangler.toml` 并填入你的配置。
+
 详细部署步骤请参考 [部署文档](./docs/DEPLOYMENT.md)。
 
 ---
@@ -370,33 +442,43 @@ pnpm deploy
 
 ## 开发路线图
 
+根据 [IT-Toolbox-开发路线图-v3.md](./docs/IT-Toolbox-开发路线图-v3.md) 规划：
+
 ### Phase 1（已完成 ✅）
-- 框架搭建
-- 15 个核心工具
-- 全局搜索
-- 收藏与历史
-- 主题切换
+- 框架搭建 + 15 个高频工具
+- JSON格式化、Base64编解码、URL编解码、JWT解析、UUID生成、Hash计算、密码生成、时间戳转换、命名转换、占位文本、颜色选择器、Markdown预览、正则测试、进制转换、文本统计
 
 ### Phase 2（已完成 ✅）
-- 更多编码工具（HTML 实体、Hex、Unicode、摩斯密码等）
-- 更多加密工具（AES、RSA、HMAC、Bcrypt、SSH 密钥等）
-- 更多格式化工具（YAML、XML、SQL、CSS、JS、TOML、CSV）
-- 更多网络工具（URL 解析、HTTP 状态码、MIME 类型、cURL 转换等）
-- 更多文本工具（Diff、相似度、Cron 解析、JSON 转类型等）
-- 更多颜色工具（渐变生成、配色方案、WCAG 对比度、色盲模拟等）
-- 更多时间工具（日期计算、时区转换、时长格式化、日历生成）
-- 更多生成器（NanoID、ULID、ObjectID、假数据、二维码、占位图）
+- 核心工具矩阵 + 52 个工具
+- 编码全家桶（HTML实体、Hex、Unicode、摩斯密码、二进制、ROT13、Punycode、ASCII表）
+- 加密套件（AES、RSA、HMAC、Bcrypt、SSH密钥、JWT生成、证书解析）
+- 格式化工具（YAML、XML、SQL、CSS、JS、TOML、CSV）
+- 文本处理（Diff、变换、转义、JSON转类型、Cron、行处理、相似度）
+- 颜色设计（渐变、配色、对比度、色盲模拟、Tailwind色板、Box Shadow）
+- 网络工具（IP查询、DNS、URL解析、HTTP状态码、请求头、MIME、子网计算、cURL转换）
+- 时间工具（日期计算、时区转换、时长格式化、日历生成）
+- 生成器（NanoID、ULID、ObjectID、假数据、二维码、占位图）
 
-### Phase 3（计划中）
-- 图片处理工具
-- 开发规范工具
-- 单位换算工具扩展
+### Phase 3（已完成 ✅）
+- 进阶工具 + 51 个工具
+- ✅ 图片处理（压缩、格式转换、尺寸调整、SVG优化、Data URI、Favicon、EXIF、取色）
+- ✅ 开发规范（.gitignore、许可证、README、Commit规范、SemVer、OpenAPI、JSON Schema）
+- ✅ 单位换算扩展（数字单位、数据存储、色彩空间、CSS单位、宽高比、罗马数字、扩展进制）
+- ✅ 网络进阶（WHOIS查询、SSL证书检测、HTTP安全头检测、常用端口参考、邮箱格式验证）
+- ✅ 数字&数学（质数检测、GCD/LCM计算、浮点数可视化、扩展进制转换）
+- ✅ JSON&数据工具扩展（JSON表格视图、JSON深度合并、JSON Schema验证）
+- ✅ HTML&CSS工具扩展（CSS clip-path生成、Flexbox生成器）
+- ✅ 二维码&条形码（条形码生成）
+- ✅ 数据生成&测试（随机JSON生成、SQL测试数据生成、正则从样本生成、文件完整性校验、JWT签名验证、密码强度分析）
 
-### Phase 4（计划中）
-- 用户账号系统
-- 云端数据同步
-- PWA 离线支持
-- 更多 AI 增强功能
+### Phase 4（已完成 ✅）
+- AI增强工具扩展（12个）
+  - AI结构化提取、AI翻译、AI报错解释、AI命名助手、AI生成Mock数据、AI Shell命令生成
+  - AI代码解释、AI正则生成、AI SQL生成、AI代码Review、AI生成Schema、AI生成提交信息
+- 效率&协作工具（7个）
+  - 快捷键系统、环境变量Diff、Changelog生成、JSON-RPC测试、Webhook测试、批量处理模式、工具对比模式
+- 前端工具扩展（7个）
+  - CSS Grid生成器、CSS动画生成、字体搭配、图标搜索、Sitemap生成、robots.txt生成、.htaccess生成
 
 ---
 
