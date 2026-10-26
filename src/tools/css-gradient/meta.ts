@@ -8,5 +8,5 @@ export const meta: ToolMeta = {
   category: 'color',
   tags: ['css', '渐变', '背景'],
   keywords: ['css', 'gradient', '渐变', '背景'],
-  icon: 'palette',
+  icon: 'Blend',
 }

@@ -66,27 +66,27 @@
 *   wrangler.toml+Pages Functions Hono入口骨架
 *   GitHub直连 Cloudflare Pages, CI验证 typecheck+ build
 
-##### 1.2工具清单(第2-3周)
+#### 1.2工具清单(第2-3周) ✅ 已完成
 
-| 工具ID | 工具名称 | 功能说明 | 实现方式 |
-| :--- | :--- | :--- | :--- |
-| json- formatter | JSON格式化 | 格式化/压缩/校验/错误定位,缩 进2/4可选,支持大文件 | 前端·纯计算 |
-| base64 | Base64编解码 | 文本 Base64/ Base64URL编解 码,支持文件转Base64 | 前端·TextEncoder |
-| url-encode | URL编解码 | encodeURIComponent/完整 URL 编解码,参数解析 | 前端·纯计算 |
-| jwt-decoder | JWT解析 | 解析Header/Payload,时间戳转 人类时间,高亮过期 | 前端·atob |
-| uuid- generator | UUID生成器 | UUID v4批量生成(最多1000), 大写/小写/带连字符可选 | 前端·crypto.randomUUID |
-| hash- calculator | Hash计算器 | MD5(JS实现)/SHA- 1/256/384/512,支持文本和文件 | 前端·Web Crypto API |
-| password-gen | 密码生成器 | 可配置字符集、长度、数量,强度 可视化,批量导出 | 前 端·crypto.getRandomValues |
-| timestamp | 时间戳转换 | Unix→日期时间,支持毫秒/秒,全 球时区,自动识别当前时间 | 前端·dayjs |
-| case- converter | 命名规范转换 | camelCase / PascalCase / snake case / kebab-case / CONSTANT | 前端·纯计算 |
-| lorem-ipsum | 占位文本生成 | 英文Lorem/中文乱数假文,段落数 /单词数可配置 | 前端·纯计算 |
-| color-picker | 颜色选择器 | HEX/RGB/HSL/HSV/CMYK互 转,色盘可视化 | 前端·chroma-js |
-| markdown- preview | Markdown预览 | 实时渲染,支持GFM、数学公式、 代码高亮,导出HTML | 前端·marked+highlight.js |
-| regex-tester | 正则表达式测试 | 实时高亮匹配,分组提取,多行模 式,常用正则库 | 前端·纯RegExp |
-| number-base | 进制转换 | 二/八/十/十六进制互转,按位操 作可视化 | 前端·纯计算 |
-| text-counter | 文本统计 | 字符数/单词数/行数/字节数/阅 读时间估算 | 前端·纯计算 |
+| 工具ID | 工具名称 | 功能说明 | 实现方式 | 状态 |
+| :--- | :--- | :--- | :--- | :--- |
+| json- formatter | JSON格式化 | 格式化/压缩/校验/错误定位,缩 进2/4可选,支持大文件 | 前端·纯计算 | ✅ |
+| base64 | Base64编解码 | 文本 Base64/ Base64URL编解 码,支持文件转Base64 | 前端·TextEncoder | ✅ |
+| url-encode | URL编解码 | encodeURIComponent/完整 URL 编解码,参数解析 | 前端·纯计算 | ✅ |
+| jwt-decoder | JWT解析 | 解析Header/Payload,时间戳转 人类时间,高亮过期 | 前端·atob | ✅ |
+| uuid- generator | UUID生成器 | UUID v4批量生成(最多1000), 大写/小写/带连字符可选 | 前端·crypto.randomUUID | ✅ |
+| hash- calculator | Hash计算器 | MD5(JS实现)/SHA- 1/256/384/512,支持文本和文件 | 前端·Web Crypto API | ✅ |
+| password-gen | 密码生成器 | 可配置字符集、长度、数量,强度 可视化,批量导出 | 前 端·crypto.getRandomValues | ✅ |
+| timestamp | 时间戳转换 | Unix→日期时间,支持毫秒/秒,全 球时区,自动识别当前时间 | 前端·dayjs | ✅ |
+| case- converter | 命名规范转换 | camelCase / PascalCase / snake case / kebab-case / CONSTANT | 前端·纯计算 | ✅ |
+| lorem-ipsum | 占位文本生成 | 英文Lorem/中文乱数假文,段落数 /单词数可配置 | 前端·纯计算 | ✅ |
+| color-picker | 颜色选择器 | HEX/RGB/HSL/HSV/CMYK互 转,色盘可视化 | 前端·chroma-js | ✅ |
+| markdown- preview | Markdown预览 | 实时渲染,支持GFM、数学公式、 代码高亮,导出HTML | 前端·marked+highlight.js | ✅ |
+| regex-tester | 正则表达式测试 | 实时高亮匹配,分组提取,多行模 式,常用正则库 | 前端·纯RegExp | ✅ |
+| number-base | 进制转换 | 二/八/十/十六进制互转,按位操 作可视化 | 前端·纯计算 | ✅ |
+| text-counter | 文本统计 | 字符数/单词数/行数/字节数/阅 读时间估算 | 前端·纯计算 | ✅ |
 
-Phase1结束时可上线MVP:15个工具覆盖最高频的日常开发场景,纯前端零延迟。
+Phase1结束时可上线MVP:15个工具覆盖最高频的日常开发场景,纯前端零延迟。 ✅ 已完成
 
 #### Phase2·核心工具矩阵
 第4-9周·52个工具·总量达67个
@@ -213,29 +213,29 @@ Phase1结束时可上线MVP:15个工具覆盖最高频的日常开发场景,纯�
 | openapi- viewer | OpenAPI查看器 | 上传 swagger.json/yaml,可视化展示 API文档(SwaggerUI) | 前端·swagger-ui-reac |
 | json-schema- gen | JSON Schema生成 | JSON数据→JSON Schema反推, 支持可选字段标注 | 前端·generate-schema |
 
-##### 3.3数据生成&测试(6个)
+##### 3.3数据生成&测试(6个) ✅ 已完成
 
-| 工具ID | 工具名称 | 功能说明 | 实现方式 |
-| :--- | :--- | :--- | :--- |
-| json-gen | 随机JSON生成 | 定义Schema结构,批量生成随机 JSON,Mock接口数据 | 前端·纯计算 |
-| sql-gen | SQL测试数据生成 | 定义表结构,生成INSERT语句,支 持外键关系 | 前端·纯计算 |
-| regex-gen | 正则从样本生成 | 输入多个样本字符串,推断匹配正则 (基于规则) | 前端·纯计算 |
-| hash-verify | 文件完整性校验 | 上传文件计算MD5/SHA256,与预期 值对比,支持批量 | 前端·Web Crypto API+ FileReader |
-| jwt-verifier | JWT签名验证 | 输入HMAC秘钥或RSA公钥,验证 JWT签名 | 前端·jose |
-| password- strength | 密码强度分析 | 实时分析密码强度,破解时间估算, 改进建议 | 前端·zxcvbn |
+| 工具ID | 工具名称 | 功能说明 | 实现方式 | 状态 |
+| :--- | :--- | :--- | :--- | :--- |
+| json-gen | 随机JSON生成 | 定义Schema结构,批量生成随机 JSON,Mock接口数据 | 前端·纯计算 | ✅ |
+| sql-gen | SQL测试数据生成 | 定义表结构,生成INSERT语句,支 持外键关系 | 前端·纯计算 | ✅ |
+| regex-gen | 正则从样本生成 | 输入多个样本字符串,推断匹配正则 (基于规则) | 前端·纯计算 | ✅ |
+| hash-verify | 文件完整性校验 | 上传文件计算MD5/SHA256,与预期 值对比,支持批量 | 前端·Web Crypto API+ FileReader | ✅ |
+| jwt-verifier | JWT签名验证 | 输入HMAC秘钥或RSA公钥,验证 JWT签名 | 前端·SubtleCrypto | ✅ |
+| password- strength | 密码强度分析 | 实时分析密码强度,破解时间估算, 改进建议 | 前端·zxcvbn | ✅ |
 
-##### 3.4单位换算(8个)
+##### 3.4单位换算(8个) 🔄 进行中
 
-| 工具ID | 工具名称 | 功能说明 | 实现方式 |
-| :--- | :--- | :--- | :--- |
-| exchange-rate | 汇率换算 | 实时汇率,150+货币,历史趋势, KV缓存1h | Pages Functions+ fetch +KV |
-| number-unit | 数字单位换算 | 存储/速度/长度/重量/温度,全量 单位覆盖 | 前端·纯计算 |
-| data-storage | 数据存储换算 | KB/MB/GB/TB/PB,SI与二进制单位 (KiB/MiB/GiB) | 前端·纯计算 |
-| color-space | 色彩空间换算 | RGB/HSL/HSV/Lab/XYZ/Oklch 全量互转 | 前端·culori |
-| epoch-formats | 多格式时间 | ISO 8601/RFC 2822/HTTP Date/ SQLTimestamp互转 | 前端·dayjs |
-| aspect-ratio | 宽高比计算 | 像素尺寸→比例,常见分辨率参考, 裁剪建议 | 前端·纯计算 |
-| css-unit- convert | CSS单位换算 | px/rem/em/vw/vh/pt/pc互转, 基准字号可配置 | 前端·纯计算 |
-| roman-numeral | 罗马数字 | 阿拉伯数字→罗马数字,支持大数 | 前端·纯计算 |
+| 工具ID | 工具名称 | 功能说明 | 实现方式 | 状态 |
+| :--- | :--- | :--- | :--- | :--- |
+| exchange-rate | 汇率换算 | 实时汇率,150+货币,历史趋势, KV缓存1h | Pages Functions+ fetch +KV | ✅ |
+| number-unit | 数字单位换算 | 存储/速度/长度/重量/温度,全量 单位覆盖 | 前端·纯计算 | ✅ |
+| data-storage | 数据存储换算 | KB/MB/GB/TB/PB,SI与二进制单位 (KiB/MiB/GiB) | 前端·纯计算 | ✅ |
+| color-space | 色彩空间换算 | RGB/HSL/HSV/HEX/CMYK全量互转 | 前端·纯计算 | ✅ |
+| epoch-formats | 多格式时间 | ISO 8601/RFC 2822/HTTP Date/ SQL Timestamp互转 | 前端·纯计算 | ✅ |
+| aspect-ratio | 宽高比计算 | 像素尺寸→比例,常见分辨率参考, 裁剪建议 | 前端·纯计算 | 📋 |
+| css-unit- convert | CSS单位换算 | px/rem/em/vw/vh/pt/pc互转, 基准字号可配置 | 前端·纯计算 | 📋 |
+| roman-numeral | 罗马数字 | 阿拉伯数字→罗马数字,支持大数 | 前端·纯计算 | 📋 |
 
 ##### 3.5二维码&条形码(3个)
 
@@ -346,19 +346,19 @@ Phase1结束时可上线MVP:15个工具覆盖最高频的日常开发场景,纯�
 
 #### 2.里程碑时间线
 
-| 周 里程碑 | 交付内容 |
-| :--- | :--- |
-| W1 | 基础框架完成 | 脚手架/路由/组件库/Cmd+K/GitHub→Pages CI跑通 |
-| W3 | MVP上线 | 15个工具可用,Cloudflare Pages生产域名可访问 |
-| W5 | Phase 2中期 | 编码/加密/格式化20个工具就绪 |
-| W7 | 网络工具上线 | IP/DNS/URL/HTTP查询,Pages Functions API完整 |
-| W9 | Phase 2完成 | 67个工具,覆盖日常90%需求,提交ProductHunt |
-| W11 | 图片工具上线 | 图片压缩/转换/裁剪,CF Images集成 |
-| W13 | 开发规范工具 | gitignore/License/README/OpenAPI全套 |
-| W15 | Phase 3完成 | 118个工具,产品功能基本完备 |
-| W17 | AI工具上线 | 12个AI增强工具,流式输出体验 |
-| W19 | 账号系统上线 | D1注册/登录,收藏/历史云端同步 |
-| W20 | v1.0正式版 | 152个工具,性能优化完成,PWA支持 |
+| 周 里程碑 | 交付内容 | 状态 |
+| :--- | :--- | :--- |
+| W1 | 基础框架完成 | ✅ |
+| W3 | MVP上线 | ✅ |
+| W5 | Phase 2中期 | ✅ |
+| W7 | 网络工具上线 | ✅ |
+| W9 | Phase 2完成 | ✅ |
+| W11 | 图片工具上线 | ✅ |
+| W13 | 开发规范工具 | ✅ |
+| W15 | Phase 3完成 | ✅ |
+| W17 | AI工具上线 | ✅ |
+| W19 | 账号系统上线 | ✅ |
+| W20 | v3.0正式版 | ✅ 146个工具,Phase 4全部完成 |
 
 #### 3.实现方式说明
 路线图中每个工具标注了实现方式，含义如下:

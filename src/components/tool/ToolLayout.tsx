@@ -1,4 +1,5 @@
 import { type ReactNode } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Star, Copy, Check, RotateCcw } from 'lucide-react'
 import type { ToolMeta } from '@toolbox/types/tool'
 import { useAppStore } from '@/store/app'
@@ -13,6 +14,7 @@ interface ToolLayoutProps {
 }
 
 export function ToolLayout({ meta, children, onReset, outputValue }: ToolLayoutProps) {
+  const { t } = useTranslation()
   const { toggleFavorite, isFavorited } = useAppStore()
   const { copy, copied } = useClipboard()
   const favorited = isFavorited(meta.id)
@@ -29,7 +31,7 @@ export function ToolLayout({ meta, children, onReset, outputValue }: ToolLayoutP
             <div className="flex items-center gap-2 flex-wrap">
               <h1 className="text-lg font-semibold text-text-primary">{meta.name}</h1>
               {meta.isNew && (
-                <span className="badge">NEW</span>
+                <span className="badge">{t('toolCard.new')}</span>
               )}
               {meta.requiresApi && (
                 <span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-bg-raised text-text-muted border border-border-base">
@@ -46,21 +48,21 @@ export function ToolLayout({ meta, children, onReset, outputValue }: ToolLayoutP
             <button
               onClick={() => copy(outputValue)}
               className="btn-ghost"
-              title="复制输出"
+              title={t('toolLayout.copyOutput')}
             >
               {copied ? <Check className="w-4 h-4 text-accent" /> : <Copy className="w-4 h-4" />}
-              <span className="hidden sm:inline">{copied ? '已复制' : '复制'}</span>
+              <span className="hidden sm:inline">{copied ? t('common.copied') : t('common.copy')}</span>
             </button>
           )}
           {onReset && (
-            <button onClick={onReset} className="btn-ghost" title="重置">
+            <button onClick={onReset} className="btn-ghost" title={t('common.reset')}>
               <RotateCcw className="w-4 h-4" />
             </button>
           )}
           <button
             onClick={() => toggleFavorite(meta.id)}
             className="btn-ghost"
-            title={favorited ? '取消收藏' : '收藏'}
+            title={favorited ? t('toolLayout.removeFromFavorites') : t('toolLayout.addToFavorites')}
           >
             <Star className={`w-4 h-4 ${favorited ? 'fill-accent text-accent' : ''}`} />
           </button>
