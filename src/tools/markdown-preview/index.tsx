@@ -2,6 +2,7 @@ import { useState, useCallback, useEffect } from 'react'
 import { Eye, Download } from 'lucide-react'
 import { ToolLayout } from '@/components/tool/ToolLayout'
 import { useAppStore } from '@/store/app'
+import { sanitizeMarkdownHtml } from '@core/format'
 import { meta } from './meta'
 
 export default function MarkdownPreview() {
@@ -36,7 +37,8 @@ function hello() {
 [访问 GitHub](https://github.com)
 `)
   const [html, setHtml] = useState('')
-  const { addHistory, addRecentTool } = useAppStore()
+  const addHistory = useAppStore((s) => s.addHistory)
+const addRecentTool = useAppStore((s) => s.addRecentTool)
 
   const renderMarkdown = useCallback(async (text: string) => {
     try {
@@ -52,7 +54,7 @@ function hello() {
       }))
       marked.setOptions({ gfm: true, breaks: true })
       const result = await marked(text)
-      setHtml(result)
+      setHtml(sanitizeMarkdownHtml(result))
     } catch {
       setHtml('<p>渲染失败</p>')
     }

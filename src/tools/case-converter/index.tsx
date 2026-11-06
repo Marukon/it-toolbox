@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react'
 import { ArrowRightLeft, Copy, Check } from 'lucide-react'
 import { ToolLayout } from '@/components/tool/ToolLayout'
-import { convertCase, type CaseType } from '@core/index'
+import { convertCase, CaseType } from '@core/text'
 import { useAppStore } from '@/store/app'
 import { useClipboard } from '@/hooks/useClipboard'
 import { meta } from './meta'
@@ -21,7 +21,8 @@ const caseTypes: { type: CaseType; label: string; example: string }[] = [
 export default function CaseConverter() {
   const [input, setInput] = useState('')
   const [results, setResults] = useState<Record<CaseType, string>>({} as Record<CaseType, string>)
-  const { addHistory, addRecentTool } = useAppStore()
+  const addHistory = useAppStore((s) => s.addHistory)
+const addRecentTool = useAppStore((s) => s.addRecentTool)
   const { copy, copied } = useClipboard()
   const [copiedType, setCopiedType] = useState<CaseType | null>(null)
 

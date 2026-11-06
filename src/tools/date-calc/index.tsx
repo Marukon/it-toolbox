@@ -1,8 +1,8 @@
 import { useState, useCallback } from 'react'
-import { Calculator, ArrowRightLeft } from 'lucide-react'
+import { Calculator } from 'lucide-react'
 import { ToolLayout } from '@/components/tool/ToolLayout'
 import { meta } from './meta'
-import { dateDifference, addDays, addMonths, addYears, type DateDiff } from '@it-toolbox/core'
+import { dateDifference, addDays, addMonths, addYears, DateDiff } from '@core/datetime'
 import { useAppStore } from '@/store/app'
 
 type Mode = 'diff' | 'add'
@@ -17,7 +17,7 @@ export default function DateCalcTool() {
   const [addYears_, setAddYears] = useState(0)
   const [diffResult, setDiffResult] = useState<DateDiff | null>(null)
   const [addResult, setAddResult] = useState<Date | null>(null)
-  const { addRecentTool } = useAppStore()
+  const addRecentTool = useAppStore((s) => s.addRecentTool)
 
   const handleDiff = useCallback(() => {
     addRecentTool(meta.id)

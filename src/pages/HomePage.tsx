@@ -1,12 +1,16 @@
 import { useState, useMemo } from 'react'
-import { Search } from 'lucide-react'
+import { Link } from '@tanstack/react-router'
+import { Search, ChevronRight } from 'lucide-react'
 import { toolRegistry, searchTools, getToolsByCategory } from '@/registry'
+import { CATEGORY_LABELS, CATEGORY_ORDER, CATEGORY_ICONS } from '@toolbox/types/tool'
+import { getIconComponent } from '@/utils/icons'
 import { ToolCard } from '@/components/ui/ToolCard'
-import { CATEGORY_LABELS, CATEGORY_ORDER } from '@toolbox/types/tool'
+import { preloadTools } from '@/lib/tool-loader'
 
 export function HomePage() {
   const [query, setQuery] = useState('')
-  const results = useMemo(() => query ? searchTools(query) : null, [query])
+
+  const results = useMemo(() => (query.trim() ? searchTools(query) : null), [query])
 
   const categories = CATEGORY_ORDER
 
@@ -47,22 +51,32 @@ export function HomePage() {
           )}
         </div>
       ) : (
-        <div className="space-y-8">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
           {categories.map(cat => {
             const tools = getToolsByCategory(cat)
-            if (tools.length === 0) return null
+            const IconComp = getIconComponent(CATEGORY_ICONS[cat])
             return (
-              <section key={cat}>
+              <Link
+                key={cat}
+                to="/category/$name"
+                params={{ name: cat }}
+                onMouseEnter={() => preloadTools(tools.map((tool) => tool.id), 3)}
+                onTouchStart={() => preloadTools(tools.map((tool) => tool.id), 3)}
+                className="card p-5 group hover:border-accent/30 transition-all duration-200"
+              >
                 <div className="flex items-center justify-between mb-3">
-                  <h2 className="text-sm font-medium text-text-secondary uppercase tracking-wider">
-                    {CATEGORY_LABELS[cat]}
-                  </h2>
-                  <span className="text-xs text-text-muted">{tools.length} 个</span>
+                  <div className="w-10 h-10 rounded-xl bg-accent/8 border border-accent/15 flex items-center justify-center group-hover:bg-accent/15 transition-colors">
+                    {IconComp && <IconComp className="w-5 h-5 text-accent" />}
+                  </div>
+                  <ChevronRight className="w-4 h-4 text-text-muted group-hover:text-accent group-hover:translate-x-0.5 transition-all" />
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
-                  {tools.map(tool => <ToolCard key={tool.id} tool={tool} />)}
-                </div>
-              </section>
+                <h3 className="text-sm font-medium text-text-primary group-hover:text-accent transition-colors">
+                  {CATEGORY_LABELS[cat]}
+                </h3>
+                <p className="text-xs text-text-muted mt-1">
+                  {tools.length} 个工具
+                </p>
+              </Link>
             )
           })}
         </div>

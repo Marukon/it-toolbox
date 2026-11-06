@@ -1,5 +1,5 @@
 import { Hono } from 'hono'
-import type { Env } from '../[[route]]'
+import type { Env } from '../../types'
 
 export const dnsRoute = new Hono<{ Bindings: Env }>()
 
@@ -13,11 +13,11 @@ dnsRoute.get('/', async (c) => {
   try {
     const cached = await c.env.CACHE.get(cacheKey)
     if (cached) return c.json({ success: true, data: JSON.parse(cached), cached: true })
-  } catch {}
+  } catch { /* 缓存不可用不影响查询 */ }
 
   const res = await fetch(
     `https://1.1.1.1/dns-query?name=${encodeURIComponent(domain)}&type=${type}`,
-    { headers: { Accept: 'application/dns-json' } }
+    { headers: { Accept: 'application/dns-json' }, signal: AbortSignal.timeout(8000) }
   )
 
   if (!res.ok) return c.json({ success: false, error: 'DNS query failed' }, 502)
@@ -27,7 +27,7 @@ dnsRoute.get('/', async (c) => {
 
   try {
     await c.env.CACHE.put(cacheKey, JSON.stringify(data), { expirationTtl: 300 })
-  } catch {}
+  } catch { /* 缓存不可用不影响查询 */ }
 
   return c.json({ success: true, data })
 })

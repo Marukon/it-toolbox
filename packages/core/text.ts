@@ -1,7 +1,4 @@
 import { Result } from './common'
-import * as Diff from 'diff'
-import cronParser from 'cron-parser'
-import cronstrue from 'cronstrue'
 
 export type CaseType = 'camel' | 'pascal' | 'snake' | 'kebab' | 'upper' | 'lower' | 'constant' | 'title' | 'sentence'
 
@@ -30,51 +27,6 @@ export function convertCase(input: string, to: CaseType): Result<string> {
     return { ok: true, value: result }
   } catch (e) {
     return { ok: false, error: (e as Error).message }
-  }
-}
-
-export interface RegexMatch {
-  match: string
-  start: number
-  end: number
-  groups: Record<string, string> | null
-}
-
-export interface RegexResult {
-  matches: RegexMatch[]
-  error?: string
-}
-
-export function testRegex(pattern: string, input: string, flags: string = 'g'): RegexResult {
-  try {
-    const regex = new RegExp(pattern, flags)
-    const matches: RegexMatch[] = []
-
-    if (flags.includes('g')) {
-      let match
-      while ((match = regex.exec(input)) !== null) {
-        matches.push({
-          match: match[0],
-          start: match.index,
-          end: match.index + match[0].length,
-          groups: match.groups || null,
-        })
-      }
-    } else {
-      const match = regex.exec(input)
-      if (match) {
-        matches.push({
-          match: match[0],
-          start: match.index,
-          end: match.index + match[0].length,
-          groups: match.groups || null,
-        })
-      }
-    }
-
-    return { matches }
-  } catch (e) {
-    return { matches: [], error: (e as Error).message }
   }
 }
 
@@ -118,34 +70,6 @@ export function countText(input: string): TextStats {
   }
 }
 
-export interface DiffResult {
-  type: 'added' | 'removed' | 'unchanged'
-  value: string
-}
-
-export function diffText(oldText: string, newText: string, mode: 'chars' | 'words' | 'lines' = 'lines'): DiffResult[] {
-  const diffFn = {
-    chars: Diff.diffChars,
-    words: Diff.diffWords,
-    lines: Diff.diffLines,
-  }[mode]
-  
-  const changes = diffFn(oldText, newText)
-  const result: DiffResult[] = []
-  
-  for (const change of changes) {
-    if (change.added) {
-      result.push({ type: 'added', value: change.value })
-    } else if (change.removed) {
-      result.push({ type: 'removed', value: change.value })
-    } else {
-      result.push({ type: 'unchanged', value: change.value })
-    }
-  }
-  
-  return result
-}
-
 export function transformText(input: string, operations: string[]): Result<string> {
   try {
     let result = input
@@ -182,7 +106,7 @@ export function transformText(input: string, operations: string[]): Result<strin
         case 'remove-duplicate-lines':
           result = [...new Set(result.split('\n'))].join('\n')
           break
-        case 'shuffle-lines':
+        case 'shuffle-lines': {
           const lines = result.split('\n')
           for (let i = lines.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1))
@@ -190,6 +114,7 @@ export function transformText(input: string, operations: string[]): Result<strin
           }
           result = lines.join('\n')
           break
+        }
         case 'number-lines':
           result = result.split('\n').map((l, i) => `${i + 1}. ${l}`).join('\n')
           break
@@ -249,44 +174,6 @@ export function unescapeString(input: string): Result<string> {
     return { ok: true, value: result }
   } catch (e) {
     return { ok: false, error: (e as Error).message }
-  }
-}
-
-export interface CronResult {
-  expression: string
-  description: string
-  nextDates: Date[]
-  fields: {
-    minute: string
-    hour: string
-    dayOfMonth: string
-    month: string
-    dayOfWeek: string
-  }
-}
-
-export function parseCron(expression: string, count: number = 5): Result<CronResult> {
-  try {
-    const interval = cronParser.parseExpression(expression)
-    const nextDates: Date[] = []
-    for (let i = 0; i < count; i++) {
-      nextDates.push(interval.next().toDate())
-    }
-    
-    const description = cronstrue.toString(expression)
-    
-    const parts = expression.split(' ')
-    const fields = {
-      minute: parts[0] || '*',
-      hour: parts[1] || '*',
-      dayOfMonth: parts[2] || '*',
-      month: parts[3] || '*',
-      dayOfWeek: parts[4] || '*',
-    }
-    
-    return { ok: true, value: { expression, description, nextDates, fields } }
-  } catch (e) {
-    return { ok: false, error: 'Invalid cron expression: ' + (e as Error).message }
   }
 }
 

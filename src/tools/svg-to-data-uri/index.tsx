@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react'
-import { FileCode, Upload, Copy, Check } from 'lucide-react'
+import { Upload, Copy, Check } from 'lucide-react'
 import { ToolLayout } from '@/components/tool/ToolLayout'
 import { useAppStore } from '@/store/app'
 import { useClipboard } from '@/hooks/useClipboard'
@@ -32,7 +32,7 @@ function svgToURIEncoded(svg: string): string {
 export default function SVGToDataURI() {
   const [input, setInput] = useState('')
   const [format, setFormat] = useState<OutputFormat>('base64')
-  const { addRecentTool } = useAppStore()
+  const addRecentTool = useAppStore((s) => s.addRecentTool)
   const { copy, copied } = useClipboard()
 
   const handleFileUpload = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {

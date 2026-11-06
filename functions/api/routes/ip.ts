@@ -1,5 +1,5 @@
 import { Hono } from 'hono'
-import type { Env } from '../[[route]]'
+import type { Env } from '../../types'
 import type { IpInfo } from '@toolbox/types/api'
 
 export const ipRoute = new Hono<{ Bindings: Env }>()
@@ -19,7 +19,7 @@ ipRoute.get('/', async (c) => {
     if (cached) {
       return c.json({ success: true, data: JSON.parse(cached), cached: true })
     }
-  } catch {}
+  } catch { /* 缓存不可用不影响查询 */ }
 
   // For the caller's own IP, use Cloudflare's request metadata directly
   if (!queryIp || ip === callerIp) {
@@ -34,13 +34,15 @@ ipRoute.get('/', async (c) => {
       latitude:       Number(cf?.latitude ?? 0),
       longitude:      Number(cf?.longitude ?? 0),
     }
-    try { await c.env.CACHE.put(cacheKey, JSON.stringify(data), { expirationTtl: 3600 }) } catch {}
+    try { await c.env.CACHE.put(cacheKey, JSON.stringify(data), { expirationTtl: 3600 }) } catch { /* 缓存写入失败不影响响应 */ }
     return c.json({ success: true, data })
   }
 
   // For arbitrary IPs, use ip-api.com (free, no key needed, 45 req/min)
   try {
-    const res = await fetch(`http://ip-api.com/json/${encodeURIComponent(ip)}?fields=status,message,country,regionName,city,timezone,as,org,lat,lon,query`)
+    const res = await fetch(`http://ip-api.com/json/${encodeURIComponent(ip)}?fields=status,message,country,regionName,city,timezone,as,org,lat,lon,query`, {
+      signal: AbortSignal.timeout(8000),
+    })
     if (!res.ok) return c.json({ success: false, error: 'IP lookup failed' }, 502)
     const json = await res.json() as Record<string, unknown>
     if (json.status !== 'success') {
@@ -57,7 +59,7 @@ ipRoute.get('/', async (c) => {
       latitude: Number(json.lat ?? 0),
       longitude: Number(json.lon ?? 0),
     }
-    try { await c.env.CACHE.put(cacheKey, JSON.stringify(data), { expirationTtl: 3600 }) } catch {}
+    try { await c.env.CACHE.put(cacheKey, JSON.stringify(data), { expirationTtl: 3600 }) } catch { /* 缓存写入失败不影响响应 */ }
     return c.json({ success: true, data })
   } catch (e) {
     return c.json({ success: false, error: (e as Error).message }, 500)

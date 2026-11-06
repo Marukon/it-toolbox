@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react'
 import { ArrowRightLeft } from 'lucide-react'
 import { ToolLayout } from '@/components/tool/ToolLayout'
-import { encodeHtmlEntities, decodeHtmlEntities } from '@core/index'
+import { encodeHtmlEntities, decodeHtmlEntities } from '@core/encoding'
 import { useAppStore } from '@/store/app'
 import { meta } from './meta'
 
@@ -12,7 +12,8 @@ export default function HtmlEntities() {
   const [output, setOutput] = useState('')
   const [error, setError] = useState('')
   const [mode, setMode] = useState<Mode>('encode')
-  const { addHistory, addRecentTool } = useAppStore()
+  const addHistory = useAppStore((s) => s.addHistory)
+const addRecentTool = useAppStore((s) => s.addRecentTool)
 
   const runTransform = useCallback(() => {
     if (!input.trim()) return

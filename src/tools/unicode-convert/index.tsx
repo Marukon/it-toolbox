@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react'
 import { ArrowRightLeft, Copy, Check } from 'lucide-react'
 import { ToolLayout } from '@/components/tool/ToolLayout'
-import { textToUnicode, unicodeToText, type UnicodeResult } from '@core/index'
+import { textToUnicode, unicodeToText, UnicodeResult } from '@core/encoding'
 import { useAppStore } from '@/store/app'
 import { useClipboard } from '@/hooks/useClipboard'
 import { meta } from './meta'
@@ -14,7 +14,8 @@ export default function UnicodeConvert() {
   const [error, setError] = useState('')
   const [mode, setMode] = useState<Mode>('encode')
   const [unicodeResult, setUnicodeResult] = useState<UnicodeResult | null>(null)
-  const { addHistory, addRecentTool } = useAppStore()
+  const addHistory = useAppStore((s) => s.addHistory)
+const addRecentTool = useAppStore((s) => s.addRecentTool)
   const { copy, copied } = useClipboard()
 
   const runTransform = useCallback(() => {

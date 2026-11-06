@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect } from 'react'
 import { RefreshCw, Download, Shield, Copy, Check } from 'lucide-react'
 import zxcvbn from 'zxcvbn'
 import { ToolLayout } from '@/components/tool/ToolLayout'
-import { generatePasswords, type PasswordOptions } from '@core/index'
+import { generatePasswords, PasswordOptions } from '@core/generator'
 import { useAppStore } from '@/store/app'
 import { useClipboard } from '@/hooks/useClipboard'
 import { meta } from './meta'
@@ -39,7 +39,7 @@ export default function PasswordGenerator() {
   })
   const [count, setCount] = useState(5)
   const [zxcvbnResult, setZxcvbnResult] = useState<ReturnType<typeof zxcvbn> | null>(null)
-  const { addRecentTool } = useAppStore()
+  const addRecentTool = useAppStore((s) => s.addRecentTool)
   const { copy } = useClipboard()
   const [copiedIdx, setCopiedIdx] = useState<number | null>(null)
 

@@ -79,9 +79,7 @@ function md5Bytes(bytes: Uint8Array): string {
     6, 10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21,
   ])
 
-  const padLen = bytes.length + 9
-  const padBytes = ((padLen + 63) & ~63) - padLen + 8
-  const totalLen = bytes.length + 1 + padBytes + 8
+  const totalLen = ((bytes.length + 8) >> 6 << 6) + 64
   const data = new Uint8Array(totalLen)
   data.set(bytes)
   data[bytes.length] = 0x80
@@ -403,7 +401,7 @@ async function buildEd25519Keys(keyPair: CryptoKeyPair): Promise<{ publicKey: st
   const publicKey = `ssh-ed25519 ${encodeBase64(pubWire)} generated@it-toolbox`
 
   // Fingerprint = SHA-256 of the wire-format public key bytes, base64
-  const fpBuf = await crypto.subtle.digest('SHA-256', pubWire)
+  const fpBuf = await crypto.subtle.digest('SHA-256', new Uint8Array(pubWire))
   const fingerprint = `SHA256:${encodeBase64(new Uint8Array(fpBuf))}`
 
   // OpenSSH private key format
@@ -504,7 +502,7 @@ async function buildRsaKeys(modulusLength: number): Promise<{ publicKey: string;
   const pubWire = concat(sshWriteString('ssh-rsa'), mpint(e), mpint(n))
   const publicKey = `ssh-rsa ${encodeBase64(pubWire)} generated@it-toolbox`
 
-  const fpBuf = await crypto.subtle.digest('SHA-256', pubWire)
+  const fpBuf = await crypto.subtle.digest('SHA-256', new Uint8Array(pubWire))
   const fingerprint = `SHA256:${encodeBase64(new Uint8Array(fpBuf))}`
 
   // Private key as OpenSSH PEM (using PKCS8 as fallback - widely supported)

@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react'
 import { KeyRound, Copy, Check, Download } from 'lucide-react'
 import { ToolLayout } from '@/components/tool/ToolLayout'
-import { generateRsaKeyPair, type RsaKeyPair } from '@core/index'
+import { generateRsaKeyPair, RsaKeyPair } from '@core/crypto'
 import { useAppStore } from '@/store/app'
 import { useClipboard } from '@/hooks/useClipboard'
 import { meta } from './meta'
@@ -14,7 +14,7 @@ export default function RsaKeygen() {
   const [isGenerating, setIsGenerating] = useState(false)
   const [error, setError] = useState('')
   const [activeTab, setActiveTab] = useState<'public' | 'private' | 'jwk'>('public')
-  const { addRecentTool } = useAppStore()
+  const addRecentTool = useAppStore((s) => s.addRecentTool)
   const { copy, copied } = useClipboard()
 
   const generate = useCallback(async () => {

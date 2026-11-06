@@ -1,5 +1,5 @@
-import { useState, useCallback } from 'react'
-import { Scale, Copy, Check, Download } from 'lucide-react'
+import { useState } from 'react'
+import { Scale, Copy, Check } from 'lucide-react'
 import { ToolLayout } from '@/components/tool/ToolLayout'
 import { useAppStore } from '@/store/app'
 import { useClipboard } from '@/hooks/useClipboard'
@@ -223,7 +223,7 @@ export default function LicenseGenerator() {
   const [selectedLicense, setSelectedLicense] = useState('MIT')
   const [author, setAuthor] = useState('')
   const [year, setYear] = useState(new Date().getFullYear().toString())
-  const { addRecentTool } = useAppStore()
+  const addRecentTool = useAppStore((s) => s.addRecentTool)
   const { copy, copied } = useClipboard()
 
   const license = LICENSES[selectedLicense]

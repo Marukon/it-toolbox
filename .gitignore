@@ -5,3 +5,21 @@ dist
 .env.local
 *.local
 *.docx
+
+.trae/
+
+# 审计报告含生产实测证据与缺陷细节，仅本地留存，不入库
+/docs/audits/
+
+package-lock.json
+
+.pnpm-debug.log
+
+# Fork 用户本地配置文件（不应提交）
+wrangler.toml
+coverage
+test-results
+playwright-report
+blob-report
+
+.workbuddy/

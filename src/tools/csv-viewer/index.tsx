@@ -1,5 +1,5 @@
 import { useState, useMemo, useCallback } from 'react'
-import { Upload, Download, Trash2 } from 'lucide-react'
+import { Upload, Download } from 'lucide-react'
 import Papa from 'papaparse'
 import { ToolLayout } from '@/components/tool/ToolLayout'
 import { meta } from './meta'
@@ -9,7 +9,7 @@ export default function CsvViewer() {
   const [input, setInput] = useState('')
   const [delimiter, setDelimiter] = useState(',')
   const [hasHeader, setHasHeader] = useState(true)
-  const { addRecentTool } = useAppStore()
+  const addRecentTool = useAppStore((s) => s.addRecentTool)
 
   const parsedData = useMemo(() => {
     if (!input.trim()) return null

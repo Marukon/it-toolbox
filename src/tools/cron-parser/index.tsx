@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react'
 import { Clock, AlertCircle } from 'lucide-react'
 import { ToolLayout } from '@/components/tool/ToolLayout'
 import { meta } from './meta'
-import { parseCron, type CronResult } from '@it-toolbox/core'
+import { parseCron, CronResult } from '@core/text-cron'
 import { useAppStore } from '@/store/app'
 
 const COMMON_EXPRESSIONS = [
@@ -22,7 +22,7 @@ export default function CronParser() {
   const [expression, setExpression] = useState('0 9 * * 1-5')
   const [result, setResult] = useState<CronResult | null>(null)
   const [error, setError] = useState('')
-  const { addRecentTool } = useAppStore()
+  const addRecentTool = useAppStore((s) => s.addRecentTool)
 
   const handleParse = useCallback(() => {
     setError('')

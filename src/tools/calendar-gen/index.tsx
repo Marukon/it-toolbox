@@ -2,7 +2,7 @@ import { useState, useMemo, useCallback } from 'react'
 import { ChevronLeft, ChevronRight, Calendar } from 'lucide-react'
 import { ToolLayout } from '@/components/tool/ToolLayout'
 import { meta } from './meta'
-import { generateCalendar } from '@it-toolbox/core'
+import { generateCalendar } from '@core/datetime'
 import { useAppStore } from '@/store/app'
 
 const WEEKDAYS = ['日', '一', '二', '三', '四', '五', '六']
@@ -12,7 +12,7 @@ export default function CalendarGenTool() {
   const today = new Date()
   const [year, setYear] = useState(today.getFullYear())
   const [month, setMonth] = useState(today.getMonth())
-  const { addRecentTool } = useAppStore()
+  const addRecentTool = useAppStore((s) => s.addRecentTool)
 
   const calendar = useMemo(() => generateCalendar(year, month), [year, month])
 

@@ -35,3 +35,9 @@ export interface ExchangeRate {
   rate: number
   timestamp: number
 }
+
+export interface ExchangeRateInfo {
+  base: string
+  rates: Record<string, number>
+  timestamp: number
+}

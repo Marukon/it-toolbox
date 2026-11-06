@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { GitCommit, Copy, Check } from 'lucide-react'
+import { Copy, Check } from 'lucide-react'
 import { ToolLayout } from '@/components/tool/ToolLayout'
 import { useAppStore } from '@/store/app'
 import { useClipboard } from '@/hooks/useClipboard'
@@ -31,7 +31,7 @@ export default function ConventionalCommit() {
   const [body, setBody] = useState('')
   const [footer, setFooter] = useState('')
   const [showEmoji, setShowEmoji] = useState(true)
-  const { addRecentTool } = useAppStore()
+  const addRecentTool = useAppStore((s) => s.addRecentTool)
   const { copy, copied } = useClipboard()
 
   const selectedType = COMMIT_TYPES.find(t => t.type === type)!

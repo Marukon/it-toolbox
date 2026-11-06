@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react'
 import { RefreshCw, Copy, Check } from 'lucide-react'
 import { ToolLayout } from '@/components/tool/ToolLayout'
-import { generateLoremIpsum } from '@core/index'
+import { generateLoremIpsum } from '@core/generator'
 import { useAppStore } from '@/store/app'
 import { useClipboard } from '@/hooks/useClipboard'
 import { meta } from './meta'
@@ -14,7 +14,7 @@ export default function LoremIpsum() {
   const [type, setType] = useState<GenType>('paragraphs')
   const [count, setCount] = useState(3)
   const [language, setLanguage] = useState<Language>('en')
-  const { addRecentTool } = useAppStore()
+  const addRecentTool = useAppStore((s) => s.addRecentTool)
   const { copy, copied } = useClipboard()
 
   const generate = useCallback(() => {

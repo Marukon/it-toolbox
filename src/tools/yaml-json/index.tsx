@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react'
 import { ArrowRightLeft, AlertCircle } from 'lucide-react'
 import { ToolLayout } from '@/components/tool/ToolLayout'
 import { meta } from './meta'
-import { yamlToJson, jsonToYaml } from '@it-toolbox/core'
+import { yamlToJson, jsonToYaml } from '@core/format-yaml'
 import { useAppStore } from '@/store/app'
 
 type Mode = 'yaml2json' | 'json2yaml'
@@ -12,7 +12,8 @@ export default function YamlJsonConverter() {
   const [output, setOutput] = useState('')
   const [error, setError] = useState('')
   const [mode, setMode] = useState<Mode>('yaml2json')
-  const { addHistory, addRecentTool } = useAppStore()
+  const addHistory = useAppStore((s) => s.addHistory)
+const addRecentTool = useAppStore((s) => s.addRecentTool)
 
   const handleConvert = useCallback(() => {
     setError('')

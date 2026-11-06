@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react'
-import { Upload, AlertCircle, CheckCircle, ShieldCheck, ShieldAlert, Copy, Check } from 'lucide-react'
-import { X509Certificate, PublicKey } from '@peculiar/x509'
+import { Upload, AlertCircle, ShieldCheck, ShieldAlert, Copy, Check } from 'lucide-react'
+import { X509Certificate } from '@peculiar/x509'
 import { ToolLayout } from '@/components/tool/ToolLayout'
 import { useClipboard } from '@/hooks/useClipboard'
 import { useAppStore } from '@/store/app'
@@ -45,7 +45,7 @@ export default function CertDecoder() {
   const [certInfo, setCertInfo] = useState<CertInfo | null>(null)
   const [error, setError] = useState('')
   const { copy, copied } = useClipboard()
-  const { addRecentTool } = useAppStore()
+  const addRecentTool = useAppStore((s) => s.addRecentTool)
 
   const handleParse = useCallback(async () => {
     if (!input.trim()) return
@@ -66,7 +66,7 @@ export default function CertDecoder() {
           const sanText = sanExt.toString()
           const matches = sanText.matchAll(/(?:DNS|IP|Email|URI):([^,\n]+)/g)
           for (const m of matches) sans.push(m[0].trim())
-        } catch {}
+        } catch { /* SAN 解析失败时保留空列表 */ }
       }
       // Also check publicKey size
       let keySize: number | null = null
@@ -79,7 +79,7 @@ export default function CertDecoder() {
             if (jwk.n) keySize = (atob(jwk.n.replace(/-/g, '+').replace(/_/g, '/')).length) * 8
           }
         }
-      } catch {}
+      } catch { /* 公钥解析失败则不显示密钥长度 */ }
 
       // Compute SHA-1 and SHA-256 fingerprints
       const derBuffer = cert.rawData
@@ -199,11 +199,11 @@ export default function CertDecoder() {
                 {
                   title: '📋 基本信息',
                   rows: [
-                    { label: '序列号', value: certInfo.serialNumber, mono: true },
-                    { label: '生效时间', value: certInfo.notBefore.toLocaleString('zh-CN') },
-                    { label: '到期时间', value: certInfo.notAfter.toLocaleString('zh-CN') },
-                    { label: '签名算法', value: certInfo.signatureAlgorithm, mono: true },
-                    { label: '公钥算法', value: certInfo.keyAlgorithm + (certInfo.keySize ? ` (${certInfo.keySize} bit)` : ''), mono: true },
+                    { label: '序列号', value: certInfo.serialNumber, mono: true, small: false },
+                    { label: '生效时间', value: certInfo.notBefore.toLocaleString('zh-CN'), mono: false, small: false },
+                    { label: '到期时间', value: certInfo.notAfter.toLocaleString('zh-CN'), mono: false, small: false },
+                    { label: '签名算法', value: certInfo.signatureAlgorithm, mono: true, small: false },
+                    { label: '公钥算法', value: certInfo.keyAlgorithm + (certInfo.keySize ? ` (${certInfo.keySize} bit)` : ''), mono: true, small: false },
                   ]
                 },
                 {

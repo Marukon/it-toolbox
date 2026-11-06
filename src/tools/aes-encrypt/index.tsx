@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react'
 import { Lock, Unlock } from 'lucide-react'
 import { ToolLayout } from '@/components/tool/ToolLayout'
-import { aesEncrypt, aesDecrypt } from '@core/index'
+import { aesEncrypt, aesDecrypt } from '@core/crypto'
 import { useAppStore } from '@/store/app'
 import { meta } from './meta'
 
@@ -14,7 +14,8 @@ export default function AesEncrypt() {
   const [error, setError] = useState('')
   const [mode, setMode] = useState<Mode>('encrypt')
   const [isProcessing, setIsProcessing] = useState(false)
-  const { addHistory, addRecentTool } = useAppStore()
+  const addHistory = useAppStore((s) => s.addHistory)
+const addRecentTool = useAppStore((s) => s.addRecentTool)
 
   const runTransform = useCallback(async () => {
     if (!input.trim() || !password) return

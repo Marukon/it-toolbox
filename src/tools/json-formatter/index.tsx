@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react'
 import { Maximize2, Minimize2, CheckCircle, XCircle, AlertCircle } from 'lucide-react'
 import { ToolLayout } from '@/components/tool/ToolLayout'
-import { formatJson, minifyJson, validateJson } from '@core/index'
+import { formatJson, minifyJson, validateJson } from '@core/format'
 import { useAppStore } from '@/store/app'
 import { meta } from './meta'
 
@@ -13,7 +13,8 @@ export default function JsonFormatter() {
   const [error, setError] = useState('')
   const [indent, setIndent] = useState<IndentSize>(2)
   const [status, setStatus] = useState<'idle' | 'valid' | 'invalid'>('idle')
-  const { addHistory, addRecentTool } = useAppStore()
+  const addHistory = useAppStore((s) => s.addHistory)
+const addRecentTool = useAppStore((s) => s.addRecentTool)
 
   const runFormat = useCallback(() => {
     if (!input.trim()) return

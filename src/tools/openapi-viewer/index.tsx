@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react'
-import { BookOpen, Upload, ChevronDown, ChevronRight } from 'lucide-react'
+import { Upload, ChevronDown, ChevronRight } from 'lucide-react'
 import * as yaml from 'js-yaml'
 import { ToolLayout } from '@/components/tool/ToolLayout'
 import { useAppStore } from '@/store/app'
@@ -162,7 +162,7 @@ export default function OpenAPIViewer() {
   const [input, setInput] = useState('')
   const [error, setError] = useState('')
   const [selectedTag, setSelectedTag] = useState<string | null>(null)
-  const { addRecentTool } = useAppStore()
+  const addRecentTool = useAppStore((s) => s.addRecentTool)
 
   const parseSpec = useCallback((text: string) => {
     setError('')

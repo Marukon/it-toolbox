@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Search } from 'lucide-react'
 import { ToolLayout } from '@/components/tool/ToolLayout'
 import { meta } from './meta'
-import { parseUserAgent } from '@it-toolbox/core'
+import { parseUserAgent } from '@core/network-ua'
 import { useAppStore } from '@/store/app'
 
 const EXAMPLE_UAS = [
@@ -35,7 +35,7 @@ const EXAMPLE_UAS = [
 export default function UserAgentTool() {
   const [input, setInput] = useState('')
   const [result, setResult] = useState<ReturnType<typeof parseUserAgent> | null>(null)
-  const { addRecentTool } = useAppStore()
+  const addRecentTool = useAppStore((s) => s.addRecentTool)
 
   const handleParse = () => {
     if (!input.trim()) {

@@ -44,7 +44,7 @@ export default function ExifReader() {
   const [error, setError] = useState('')
   const [hideGps, setHideGps] = useState(false)
   const [hidePersonal, setHidePersonal] = useState(false)
-  const { addRecentTool } = useAppStore()
+  const addRecentTool = useAppStore((s) => s.addRecentTool)
   const { copy, copied } = useClipboard()
 
   const handleFile = useCallback(async (file: File) => {
@@ -98,7 +98,7 @@ export default function ExifReader() {
 
   const exportJson = useCallback(() => {
     if (!data) return
-    let exportData = { ...data }
+    const exportData = { ...data }
     if (hideGps) {
       TAG_GROUPS.find(g => g.key === 'gps')?.tags.forEach(t => delete exportData[t])
     }
@@ -128,7 +128,7 @@ export default function ExifReader() {
 
   const copyJson = () => {
     if (!data) return
-    let exportData = { ...data }
+    const exportData = { ...data }
     if (hideGps) TAG_GROUPS.find(g => g.key === 'gps')?.tags.forEach(t => delete exportData[t])
     if (hidePersonal) TAG_GROUPS.find(g => g.key === 'personal')?.tags.forEach(t => delete exportData[t])
     copy(JSON.stringify(exportData, null, 2))
@@ -200,9 +200,9 @@ export default function ExifReader() {
               {previewUrl && (
                 <div className="bg-bg-surface border border-border-base rounded-lg p-3">
                   <img src={previewUrl} alt="preview" className="w-full h-40 object-contain rounded" />
-                  {!hideGps && data['latitude'] && data['longitude'] && (
+                  {!hideGps && data['latitude'] !== undefined && data['longitude'] !== undefined && (
                     <a
-                      href={`https://maps.google.com/?q=${data['latitude']},${data['longitude']}`}
+                      href={`https://maps.google.com/?q=${String(data['latitude'])},${String(data['longitude'])}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center gap-1 text-xs text-accent mt-2 hover:underline"

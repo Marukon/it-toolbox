@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react'
 import { Terminal, Copy, Check, Download } from 'lucide-react'
 import { ToolLayout } from '@/components/tool/ToolLayout'
-import { generateSshKeyPair, type SshKeyPair } from '@core/index'
+import { generateSshKeyPair, SshKeyPair } from '@core/crypto'
 import { useAppStore } from '@/store/app'
 import { useClipboard } from '@/hooks/useClipboard'
 import { meta } from './meta'
@@ -14,7 +14,7 @@ export default function SshKeygen() {
   const [isGenerating, setIsGenerating] = useState(false)
   const [error, setError] = useState('')
   const [activeTab, setActiveTab] = useState<'public' | 'private'>('public')
-  const { addRecentTool } = useAppStore()
+  const addRecentTool = useAppStore((s) => s.addRecentTool)
   const { copy, copied } = useClipboard()
 
   const generate = useCallback(async () => {

@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react'
 import { Calculator } from 'lucide-react'
 import { ToolLayout } from '@/components/tool/ToolLayout'
 import { meta } from './meta'
-import { calculateSubnet, type SubnetResult } from '@it-toolbox/core'
+import { calculateSubnet, SubnetResult } from '@core/network'
 import { useAppStore } from '@/store/app'
 
 export default function IpSubnetTool() {
@@ -10,7 +10,7 @@ export default function IpSubnetTool() {
   const [cidr, setCidr] = useState(24)
   const [result, setResult] = useState<SubnetResult | null>(null)
   const [error, setError] = useState('')
-  const { addRecentTool } = useAppStore()
+  const addRecentTool = useAppStore((s) => s.addRecentTool)
 
   const handleCalculate = useCallback(() => {
     addRecentTool(meta.id)

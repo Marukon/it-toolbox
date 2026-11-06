@@ -1,7 +1,8 @@
 import { useState, useCallback, useRef } from 'react'
 import { Hash, Upload, Copy, Check } from 'lucide-react'
 import { ToolLayout } from '@/components/tool/ToolLayout'
-import { md5, sha1, sha256, sha384, sha512, hashFile, type Result } from '@core/index'
+import type { Result } from '@core/common'
+import { md5, sha1, sha256, sha384, sha512, hashFile } from '@core/crypto'
 import { useAppStore } from '@/store/app'
 import { useClipboard } from '@/hooks/useClipboard'
 import { meta } from './meta'
@@ -19,7 +20,7 @@ export default function HashCalculator() {
   const [selectedAlgo, setSelectedAlgo] = useState<Algorithm[]>(['MD5', 'SHA-256'])
   const [isProcessing, setIsProcessing] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
-  const { addRecentTool } = useAppStore()
+  const addRecentTool = useAppStore((s) => s.addRecentTool)
   const { copy, copied } = useClipboard()
 
   const algorithms: Algorithm[] = ['MD5', 'SHA-1', 'SHA-256', 'SHA-384', 'SHA-512']

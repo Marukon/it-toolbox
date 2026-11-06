@@ -4,7 +4,7 @@
 
 ## 1. 项目概述
 
-IT Toolbox 是面向开发者的在线工具箱，集成 72 款高频开发工具。基于 Cloudflare Pages Functions 全栈部署，前后端同域，无需传统服务器，全球边缘节点低延迟响应。
+IT Toolbox 是面向开发者的在线工具箱，集成 140+ 款高频开发工具。基于 Cloudflare Pages Functions 全栈部署，前后端同域，无需传统服务器，全球边缘节点低延迟响应。
 
 ### 核心特性
 
@@ -14,7 +14,7 @@ IT Toolbox 是面向开发者的在线工具箱，集成 72 款高频开发工�
 | 边缘优先 | 全球 300+ Cloudflare 节点，无冷启动，API 响应 <50ms |
 | 零服务器 | 完全 Serverless，无购买维护服务器成本 |
 | 前端计算 | 90% 工具浏览器端运算，隐私安全，无网络往返 |
-| Git 驱动部署 | push main 分支自动构建部署，无 Actions，无 CLI 操作 |
+| Git 驱动部署 | push main 分支自动构建部署，部署链路不经 Actions、无 CLI 操作 |
 | 弹性成本 | 免费计划覆盖日活万级，初期成本为零 |
 
 ---
@@ -120,7 +120,7 @@ it-toolbox/
 │   │   │   └── index.tsx         # 工具 UI 组件
 │   │   ├── base64/
 │   │   ├── hash-calculator/
-│   │   └── ...                   # 其他工具 (共72个)
+│   │   └── ...                   # 其他工具
 │   ├── utils/                    # 工具函数
 │   │   └── icons.ts              # 图标映射
 │   ├── index.css                 # 全局样式
@@ -216,34 +216,53 @@ it-toolbox/
 | ESLint | 代码检查 |
 | TypeScript | 类型检查 |
 
+### 4.4 平台能力边界
+
+选型的硬约束来自 Cloudflare Pages Functions 的能力范围。下表是决定「哪些工具能做、怎么做」的依据：
+
+| 能力 / Binding | 支持 | 本项目 | 说明 |
+| :--- | :---: | :---: | :--- |
+| 浏览器端 Web Crypto API | ✅ | 已用 | SHA/AES-GCM/RSA-OAEP/ECDSA/HMAC，所有加密工具的核心，无需后端 |
+| Workers KV | ✅ | 已绑定 `CACHE` | 外部 API 结果缓存，TTL 自动过期，日写入量低于免费配额 |
+| Workers AI | ✅ | 已绑定 `AI` | 代码解释、正则/SQL/Shell 生成 |
+| fetch() 外部 HTTP | ✅ | 已用 | 汇率、RDAP、证书查询；单个请求内最多 6 个并发连接 |
+| `nodejs_compat` | ✅ | 已开启 | Buffer、crypto、stream，用于 UA 与 MIME 解析 |
+| Cloudflare D1 | ✅ | 未用 | 只在做账号体系时才需要；当前所有用户态数据存 localStorage |
+| Cloudflare R2 | ✅ | 未用 | 图片处理已由前端 Canvas 完成，没有落盘中转需求 |
+| Cloudflare Images | ✅ | 未用 | 需绑定 R2 作源，且会引入付费与外部依赖 |
+| Analytics Engine | ✅ | 未用 | 可作为后续用量统计的落点，目前无埋点 |
+| Service Bindings | ✅ | 未用 | 单 Worker 足够，没有拆分子服务的必要 |
+| WebSocket（服务端） | ✅ | 未用 | AI 接口当前为一次性返回，未做流式 |
+| Cron Triggers | ❌ | — | Pages Functions 不支持定时任务，汇率缓存改为请求触发的懒刷新 |
+| Durable Objects（自定义类） | ❌ | — | Pages Functions 无法定义 DO 类，限流方案因此整体放弃 |
+| Cloudflare Queues | ❌ | — | 不能作为 Queue Consumer |
+| TCP Socket | ❌ | — | 无法直连 MySQL/PostgreSQL |
+
+由此得出两条架构结论：约 90% 的工具是纯前端计算（纯 JS 计算 ~60%、Web Crypto ~15%、Canvas ~5%），不经过后端；后端只承担 IP/DNS/汇率/WHOIS/证书/AI 这六类必须有出网能力的场景。凡是需要常驻状态或定时调度的设计，在选型阶段就直接排除。
+
 ---
 
 ## 5. 核心模块设计
 
 ### 5.1 工具注册表 (Registry)
 
-工具注册表是整个应用的核心，所有工具通过 `src/registry.ts` 统一注册。
+工具清单的唯一事实源是各工具目录下的 `meta.ts`。`src/registry.ts` 只做构建期聚合与展示排序，不再手写元数据：
 
 ```typescript
 // src/registry.ts
 import Fuse from 'fuse.js'
 import type { ToolMeta } from '@toolbox/types/tool'
 
-export const toolRegistry: ToolMeta[] = [
-  {
-    id: 'json-formatter',        // 唯一标识，用于路由
-    name: 'JSON 格式化',          // 显示名称
-    nameEn: 'JSON Formatter',    // 英文名称
-    description: '格式化、压缩、校验 JSON', // 描述
-    category: 'format',          // 分类
-    tags: ['json', 'format'],    // 标签 (用于搜索)
-    keywords: ['大括号', '对象'], // 中文关键词
-    icon: 'Braces',              // 图标名称
-    requiresApi: false,          // 是否需要后端 API
-    isNew: false,                // 是否新工具
-  },
-  // ... 更多工具 (共72个)
+// 仅维护展示顺序；未登记的 id 按字典序排在末尾
+const DISPLAY_ORDER: string[] = [
+  'json-formatter', 'markdown-preview', 'base64', /* ... */
 ]
+
+const metaModules = import.meta.glob<{ meta: ToolMeta }>('@/tools/*/meta.ts', { eager: true })
+
+export const toolRegistry: ToolMeta[] = Object.values(metaModules)
+  .map((mod) => mod.meta)
+  .sort(/* DISPLAY_ORDER 序 + id 字典序 */)
 
 // 模糊搜索索引
 export const searchIndex = new Fuse(toolRegistry, {
@@ -396,7 +415,6 @@ import { aiRoute } from './routes/ai'
 
 export interface Env {
   CACHE: KVNamespace
-  FILES: R2Bucket
   AI: Ai
   ENVIRONMENT: string
   EXCHANGE_API_KEY: string
@@ -439,10 +457,29 @@ export const onRequest = handle(app)
 
 ### KV 缓存策略
 
-| Key 格式 | 用途 | TTL |
-|----------|------|-----|
-| `cache:ip:{ip}` | IP 查询缓存 | 3600s |
-| `cache:dns:{domain}:{type}` | DNS 查询缓存 | 300s |
+所有需要外部请求的路由统一走 KV 缓存，键名由「业务前缀 + 规范化后的查询参数」构成（URL 先标准化、域名先去协议与路径并转小写），不使用哈希，便于在 Dashboard 直接检索。
+
+| Key 格式 | 归属路由 | 缓存内容 | TTL |
+|----------|----------|----------|-----|
+| `cache:ip:{ip}` | `ip.ts` | IP 归属地与 ASN | 3600s |
+| `cache:dns:{domain}:{type}` | `dns.ts` | DNS 解析结果 | 300s |
+| `cache:headers:{url}` | `headers-check.ts` | HTTP 响应头 | 3600s |
+| `cache:ssl:{domain}` | `ssl-check.ts` | 证书链与有效期 | 3600s |
+| `cache:whois:{target}` | `whois.ts` | RDAP/WHOIS 记录 | 3600s |
+| `cache:exchange:rates:{base}` | `exchange.ts` | 基准货币汇率列表 | 3600s |
+| `cache:exchange:{from}:{to}` | `exchange.ts` | 单位汇率换算结果 | 3600s |
+| `cache:rdap:bootstrap` | `whois.ts` | IANA RDAP 引导表（全后缀共用） | 86400s |
+
+汇率换算的键里**不含金额**：缓存的是单价换算系数，读取后按实际金额乘算，因此任意金额共享同一条缓存。这是汇率键这样设计的原因，改动缓存策略时不要退化成按金额建键。
+
+缓存行为约定：
+
+- **失败不写缓存**：上游 API 报错时保留旧值，避免把瞬时错误固化一小时。
+- **KV 异常降级**：KV 读写失败时直接透传上游请求，工具功能不中断。
+- **DNS 例外**：解析结果变化快，TTL 取 300s；其余外部查询统一 1 小时。
+- **RDAP 引导表单独长缓存**：引导表按 IANA 发布节奏更新，86400s 足够且能省掉每次查询的额外往返。
+
+KV 命名空间绑定名为 `CACHE`，本地与生产绑定步骤见 [DEPLOYMENT.md](./DEPLOYMENT.md#4-绑定资源操作步骤详解)。
 
 ---
 
@@ -498,13 +535,14 @@ export default defineConfig({
 
 ### 10.1 新增工具流程
 
-1. 在 `src/tools/` 下创建新文件夹
-2. 创建 `meta.ts`（工具元信息）
-3. 创建 `index.tsx`（工具 UI 组件）
-4. 在 `src/registry.ts` 中添加注册记录
-5. 在 `src/pages/ToolPage.tsx` 添加懒加载映射
-6. 如有纯计算逻辑，添加到 `packages/core/src/`
-7. 如需后端 API，在 `functions/api/routes/` 中添加路由
+1. 在 `src/tools/<id>/` 下创建目录（目录名即工具 id）
+2. 创建 `meta.ts`（工具元信息，唯一事实源）
+3. 创建 `index.tsx`（工具 UI 组件，默认导出并用 `ToolLayout` 包裹）
+4. 如需纯计算逻辑，添加到 `packages/core/src/`，按 `@core/<module>` 子路径导入
+5. 如需后端 API，在 `functions/api/routes/` 中添加路由
+6. 运行 `pnpm icons:gen && pnpm check`
+
+`src/registry.ts` 不再需要手工登记：它在构建期用 `import.meta.glob('@/tools/*/meta.ts', { eager: true })` 聚合全部 meta，未列入展示顺序的工具自动排到末尾。`src/lib/tool-loader.ts` 同样基于 glob 自动生成懒加载表，无需改路由或映射。
 
 ### 10.2 工具模板
 
@@ -601,9 +639,42 @@ export default function XxxTool() {
 
 ---
 
+## 12. 架构决策记录
+
+记录已定案、且有明确「为什么」的决策。后续方案不与这几条冲突着做。
+
+### 12.1 放弃 Durable Objects 限流
+
+公共服务不做限流；且 Pages Functions 无法定义 DO 类，早期方案里「用 DO 做计数器」本身在平台上不可实现。限流改为上层策略（Cloudflare 平台的速率规则），代码内不维护计数器。
+
+### 12.2 部署走 Pages 直连，Actions 只做质量门禁
+
+早先方案用 Actions 同时做构建、部署。现在职责拆开：
+
+- **部署**：Cloudflare Pages 直连 GitHub，`push main` 即构建上线，不需要 Actions 参与，也不需要部署密钥。
+- **校验**：`.github/workflows/ci.yml` 保留两个 job —— `verify`（typecheck → typecheck:api → lint → test → build）与 `e2e`（Playwright），只做挡板，不产出部署物。
+
+这样合并请求有统一门禁，部署链路又只有一条，不会出现 Actions 部署与 Pages 部署互相覆盖的情况。
+
+### 12.3 放弃 Wrangler CLI 手动部署
+
+`wrangler` 只保留本地调试用途，生产部署不执行 `wrangler deploy`。手工部署会与 Git 历史脱节，也无法保证线上版本可追溯到某个提交。
+
+### 12.4 binding 不进仓库，只在 Dashboard 绑定
+
+仓库里只有 `wrangler.example.toml` 作为本地开发模板，`wrangler.toml` 写进 `.gitignore`。生产环境的 KV / AI binding 在 Cloudflare Dashboard 的 Settings → Functions 中配置。
+
+原因：binding ID 属于账号资源，不是代码资产。提交真实 ID 会让 fork 用户继承并误用他人命名空间，也会把账号内部标识泄露到公开仓库。代价是首次部署要手动点一遍，属于一次性成本。
+
+### 12.5 KV 只做缓存，不做业务状态
+
+移除限流计数器后，KV 只写缓存数据，日写入量远低于免费配额。用户态数据（收藏、历史、主题）全部留在 localStorage，不需要账号与数据库。
+
+---
+
 ## 更新日志
 
 | 版本 | 日期 | 变更内容 |
 |------|------|----------|
-| 2.0.0 | 2026-02-21 | 更新架构文档，反映 72 款工具的实际状态 |
+| 1.6.0 | 2026-11-04 | 统一版本序列；补充分包/缓存/状态模型；工具数 144 |
 | 1.0.0 | 2026-02-20 | 初始架构设计文档 |

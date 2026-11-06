@@ -1,7 +1,7 @@
 import { useState, useMemo, useCallback } from 'react'
 import { ToolLayout } from '@/components/tool/ToolLayout'
 import { meta } from './meta'
-import { formatDuration, parseDuration, humanizeDuration } from '@it-toolbox/core'
+import { formatDuration, parseDuration, humanizeDuration } from '@core/datetime'
 import { useAppStore } from '@/store/app'
 
 type InputFormat = 'seconds' | 'hhmmss'
@@ -10,7 +10,7 @@ export default function DurationFormatTool() {
   const [input, setInput] = useState('3661')
   const [inputFormat, setInputFormat] = useState<InputFormat>('seconds')
   const [error, setError] = useState('')
-  const { addRecentTool } = useAppStore()
+  const addRecentTool = useAppStore((s) => s.addRecentTool)
 
   const seconds = useMemo(() => {
     if (!input.trim()) return 0
